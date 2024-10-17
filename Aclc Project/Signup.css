@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Ubuntu",sans-serif;
+    font-weight: 400px;
+    color: white;
+}
+body {
+
+    background-color: #d4d4d4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+  }
+  
+  .signin_form {
+    position: relative;
+    background-color: rgb(9, 103, 133);
+    padding: 60px 30px 30px 30px; /* Added top padding for circle space */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  /* Circle Border around the form */
+  .circle_icon{
+    position: absolute;
+    top: -50px; /* Move the circle halfway above the form */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 100px;
+    background-color: #3498db;
+    border-radius: 50%;
+  }
+/* Input Form */
+.label_container{
+  text-align: left;
+  margin-bottom: 15px;
+}
+.label_container input {
+  margin-top: 10px;
+  width: 100%;
+  color: black;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Remember Code */
+
+.check_option{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.check {
+  display: flex;
+  align-items: center;
+}
+
+.check input{
+  margin: 5px;
+}
+.check a{
+  text-decoration: none;
+  color: #001524;
+}
+
+.submit input{
+  text-align: center;
+  display: flex;
+  margin-top: 30px;
+  width: 100%;
+  padding: 10px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
