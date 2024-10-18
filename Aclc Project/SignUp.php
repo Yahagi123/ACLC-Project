@@ -16,7 +16,7 @@
                 <span></span>
             </div>
             <h2>Sign Up</h2>
-        <form action="connect.php" method="POST">
+        <form action="" method="POST">
             <div class="label_container">
                 <label for="Username">Username</label>
                 <input type="text" name="username" id="username" placeholder="Username">
