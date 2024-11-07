@@ -8,10 +8,12 @@
     <link rel="stylesheet" href="sidebar.css">
 </head>
 <body>
+<script src="https://kit.fontawesome.com/cb73975b1a.js" crossorigin="anonymous"></script>
+
     <div class="sidebar">
         <header>CS31</header>
             <ul>
-                <li><a href="dashboard.php">Dashboard</a></li>
+                <li><a href="dashboard.php">Home</a></li>
                 <li><a href="attendance.php">Attendance</a></li>
                 <li><a href="#">Student</a></li>
                     <div class="student_drop">
