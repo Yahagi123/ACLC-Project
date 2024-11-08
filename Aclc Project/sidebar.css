@@ -37,3 +37,6 @@ body{
     text-decoration: none;
         
 }
+.sidebar ul i{
+    margin: .5rem;
+}

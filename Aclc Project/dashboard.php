@@ -9,20 +9,19 @@
 </head>
 <body>
 <script src="https://kit.fontawesome.com/cb73975b1a.js" crossorigin="anonymous"></script>
-
     <div class="sidebar">
         <header>CS31</header>
             <ul>
-                <li><a href="dashboard.php">Home</a></li>
-                <li><a href="attendance.php">Attendance</a></li>
-                <li><a href="#">Student</a></li>
+                <li><a href="dashboard.php"><i class="fa-regular fa-house"></i>Home</a></li>
+                <li><a href="attendance.php"><i class="fa-regular fa-rectangle-list"></i>Attendance</a></li>
+                <li><a href="#"><i class="fa-regular fa-square"></i>Student</a></li>
                     <div class="student_drop">
-                        <li><a href="Senior.php">Senior High</a></li>
-                        <li><a href="collage.php">Collage</a></li>
+                        <li><a href="Senior.php"><i class="fa-solid fa-user-graduate"></i>Senior High</a></li>
+                        <li><a href="collage.php"><i class="fa-solid fa-user-graduate"></i>Collage</a></li>
                     </div>
-                <li><a href="#">Calendar</a></li>
-                <li><a href="#">Schedule</a></li>
-                <li><a href="#">Teacher</a></li>
+                <li><a href="#"><i class="fa-solid fa-calendar-days"></i>Calendar</a></li>
+                <li><a href="#"><i class="fa-solid fa-calendar-days"></i>Schedule</a></li>
+                <li><a href="#"><i class="fa-solid fa-chalkboard-user"></i>Teacher</a></li>
                 <li style="background:red;"><a href="logout.php">Logout</a></li>
             </ul>
     </div>
