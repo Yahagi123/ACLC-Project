@@ -60,22 +60,5 @@
     // Close the database connection
     $conn->close();
     ?>
-    
-    <!-- <div class="sidebar">
-        <header>CS31</header>
-            <ul>
-                <li><a href="dashboard.php">Dashboard</a></li>
-                <li><a href="attendance.php">Attendance</a></li>
-                <li><a href="#">Student</a></li>
-                    <div class="student_drop">
-                        <li><a href="Senior.php">Senior High</a></li>
-                        <li><a href="collage.php">Collage</a></li>
-                    </div>
-                <li><a href="#">Calendar</a></li>
-                <li><a href="#">Schedule</a></li>
-                <li><a href="#">Teacher</a></li>
-                <li style="background:red;"><a href="logout.php">Logout</a></li>
-            </ul>
-    </div> -->
 </body>
 </html>

@@ -66,11 +66,14 @@ table{
     font-size: 16px;
     color: white;
     padding-left: 40px;
-    text-decoration: none;
+    text-decoratio
 } */
 .center{
     border-collapse:collapse ;
     margin: 25px;
     font-size: 0.9em;
-    min-width: 400px;
+    min-width: 400px;        
+}
+.sidebar ul i{
+    margin: .5rem;
 }
