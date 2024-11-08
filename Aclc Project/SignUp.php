@@ -13,48 +13,48 @@
         $password2 = $_POST['password_con'];
     
         //username error 
-        if(empty($username)){
-            $NameError = 'Username Required';
-        }
-        elseif(!preg_match(('/^[a-zA-Z]+$/'), $username)){
-            $NameError  ="Name should contain Char and Space";
-        }
-        elseif(!preg_match(("/^[0-9]$/"), $username)){
-            $NameError = "Name should have a Number";
-        }
+        // if(empty($username)){
+        //     $NameError = 'Username Required';
+        // }
+        // elseif(!preg_match(('/^[a-zA-Z]+$/'), $username)){
+        //     $NameError  ="Name should contain Char and Space";
+        // }
+        // elseif(!preg_match(("/^[0-9]$/"), $username)){
+        //     $NameError = "Name should have a Number";
+        // }
 
-        //Email error
-        if(empty($email)){
-            $emailError = "The Email is required";
-        }
-        elseif(filter_var($email, FILTER_VALIDATE_EMAIL) === false){
-            $EmailError = "Invalid Email";
-        }
-        //Password Error
-        if(empty($password)){
-            $passwordError = "The password is required";
-        }
-        elseif(strlen($password) <= 8){
-            $PasswordError = "Password Must Contain 8-12 letter";
-        }
-        elseif(!preg_match(("#[0-9]#"), $password)){
-            $passwordError = "Password must required number";
-        }
-        elseif(!preg_match(("#[a-z]#"), $password)){
-            $passwordError = "Password required one small letter";
-        }
-        elseif(!preg_match(("#[A-Z]#"), $password)){
-            $PasswordError = "Password required one big letter";
-        }
-        elseif(!preg_match(("[@_!#$%^&*()<>?/|}{~:]"), $password)){
-            $PasswordError = "Password Required Special Character";
-        }
-        //Same Password Accept
-        elseif($password2 != $password){
-            $passwordError = "Password Is Incorrect";
-        }
+        // //Email error
+        // if(empty($email)){
+        //     $emailError = "The Email is required";
+        // }
+        // elseif(filter_var($email, FILTER_VALIDATE_EMAIL) === false){
+        //     $EmailError = "Invalid Email";
+        // }
+        // //Password Error
+        // if(empty($password)){
+        //     $passwordError = "The password is required";
+        // }
+        // elseif(strlen($password) <= 8){
+        //     $PasswordError = "Password Must Contain 8-12 letter";
+        // }
+        // elseif(!preg_match(("#[0-9]#"), $password)){
+        //     $passwordError = "Password must required number";
+        // }
+        // elseif(!preg_match(("#[a-z]#"), $password)){
+        //     $passwordError = "Password required one small letter";
+        // }
+        // elseif(!preg_match(("#[A-Z]#"), $password)){
+        //     $PasswordError = "Password required one big letter";
+        // }
+        // elseif(!preg_match(("[@_!#$%^&*()<>?/|}{~:]"), $password)){
+        //     $PasswordError = "Password Required Special Character";
+        // }
+        // //Same Password Accept
+        // elseif($password2 != $password){
+        //     $passwordError = "Password Is Incorrect";
+        // }
 
-        else{ 
+        // else{ 
         $hash = password_hash($password, algo: PASSWORD_DEFAULT);
         $sql = "INSERT INTO `user`(`Username`, `Email`, `Password`) VALUES ('$username','$email','$hash')";
         if($conn->query($sql)){
@@ -64,7 +64,7 @@
              die("connection error". $conn->error);
          }
      }
-    }
+    
 
 ?>
 <!DOCTYPE html>

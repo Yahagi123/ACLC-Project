@@ -1,3 +1,10 @@
+<?php
+    require "./connect.php";
+    $sql = "SELECT  `USN`,`Time_In` FROM `student_create` ORDER BY Time_In DESC";
+    $result = $conn->query($sql);
+    
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +15,53 @@
     <link rel="stylesheet" href="attendance.css">
 </head>
 <body>
-    <div class="sidebar">
+<script>
+    // Refresh page every 5 seconds
+    setInterval(function() {
+        location.reload();
+    }, 5000);
+</script>
+
+    <div class="navigation_bar">
+        <button><a href="dashboard.php">Back</a></button>
+        <ul>
+            <li><a href="#">Senior High</a></li>
+            <li><a href="#">Collage</a></li>
+            <li><a href="Create.php">Create new Uid Card</a></li>
+        </ul>
+    </div>
+    <table>
+        <h2>Attendance Status: Please Scan The RFID</h2>
+        <tr>
+            <th>Image</th>
+            <th>Student Name</th>
+            <th>USN</th>
+            <th>Course</th>
+            <th>Year</th>
+            <th>Date</th>
+            <th>Time in</th>
+            <th>Time Out</th>
+        </tr>
+        <tbody>
+            <?php
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo"<tr>";
+                    echo "<td>". $row["USN"] ."</td>";
+                    echo"<tr>";
+                }
+            }else {
+                echo "<tr><td colspan='2'>No RFID logs found</td></tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+    <?php
+    // Close the database connection
+    $conn->close();
+    ?>
+    
+    <!-- <div class="sidebar">
         <header>CS31</header>
             <ul>
                 <li><a href="dashboard.php">Dashboard</a></li>
@@ -23,6 +76,6 @@
                 <li><a href="#">Teacher</a></li>
                 <li style="background:red;"><a href="logout.php">Logout</a></li>
             </ul>
-    </div>
+    </div> -->
 </body>
 </html>

@@ -4,12 +4,44 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Ubuntu",sans-serif;
-    font-weight: 400px;
 }
 body{
     background: #D4D4D4;
 }
-
+.navigation_bar button a{
+    font-weight: 400px;
+    font-size: 22px;
+    border: none;
+    background: black;
+    color: white;
+    text-decoration: none;
+}
+.navigation_bar li a{
+    font-weight: 400px;
+    font-size: 22px;
+    color:black;
+    text-decoration: none;
+}
+.navigation_bar{
+    background: #36454F;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    padding: 30px 10%;
+}
+.navigation_bar  ul  li{
+display: inline-block;
+padding: 15px;
+}
+table{
+    margin: 20px;
+    border-collapse: collapse;
+    width: 100%;
+    color: black;
+    text-align: left;
+    text-align: center;
+}
+/* 
 .sidebar{
     position: fixed;
     left: 0 ;
@@ -35,5 +67,10 @@ body{
     color: white;
     padding-left: 40px;
     text-decoration: none;
-        
+} */
+.center{
+    border-collapse:collapse ;
+    margin: 25px;
+    font-size: 0.9em;
+    min-width: 400px;
 }
