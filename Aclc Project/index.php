@@ -10,24 +10,16 @@
 
 </head>
 <body>
-    <script>
-        setInterval(function() {
-        location.reload();
-    }, 5000);
-    </script>
     <div class="header">
         <span>Attendance System</span>
         <ul>
-            <li><a href="#">Blog</a></li>
+            <li><a href="index.php">Home</a></li>
+            <li><a href="scan.php">Scan</a></li>
             <li><a href="#">About</a></li>
             <li><a href="SignIn.php">Sign In</a></li>
         </ul>
     </div>
     <!-- RFID -->
-     <div class="container">
-     <form id="rfidForm" action="index.php" method="post">
-        <input type="text" id="cardID" name="cardID" placeholder="Scan Card" autofocus>
-    </form>
-     </div>
+     
 </body>
 </html>
