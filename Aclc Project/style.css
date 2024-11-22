@@ -17,12 +17,12 @@ body{
 }
 .header li a{
     font-weight: 400px;
-    font-size: 22px;
+    font-size: 15px;
     color:black;
     text-decoration: none;
 }
 .header{
-    background: #36454F;
+    background: #2e6d97;
     justify-content: space-between;
     display: flex;
     align-items: center;

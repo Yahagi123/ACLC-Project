@@ -11,6 +11,7 @@
         $email = $_POST['email'];
         $password = $_POST['password'];
         $password2 = $_POST['password_con'];
+        $role = $_POST['role'];
     
         //username error 
         // if(empty($username)){
@@ -56,7 +57,7 @@
 
         // else{ 
         $hash = password_hash($password, algo: PASSWORD_DEFAULT);
-        $sql = "INSERT INTO `user`(`Username`, `Email`, `Password`) VALUES ('$username','$email','$hash')";
+        $sql = "INSERT INTO `user`(`Username`, `Email`, `Password`, `Role`) VALUES ('$username','$email','$hash','$role')";
         if($conn->query($sql)){
          $Data_inserted ="Sign In Successfull";
         }
@@ -107,6 +108,12 @@
                 <label for="Confirm Password">Confirm Password</label>
                 <input type="password" name="password_con" id="password_con" placeholder="Confirm Password">
 
+            </div>
+            <div class="label_container">
+                <select name="role" id="role">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
             </div>
             <div class="submit">
             <input type="submit" value="SignUp" name="SignUp">
