@@ -1,53 +1,115 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Ubuntu",sans-serif;
-}
-body{
-    background: #D4D4D4;
-}
-.header a{
-    font-weight: 400px;
-    font-size: 22px;
-    border: none;
-    color: white;
-    text-decoration: none;
-}
-.header li a{
-    font-weight: 400px;
-    font-size: 15px;
-    color:black;
-    text-decoration: none;
-}
-.header{
-    background: #344652;
-    justify-content: space-between;
-    display: flex;
-    align-items: center;
-    padding: 30px 10%;
-}
-.header  ul  li{
-display: inline-block;
-padding: 15px;
-}
-.header span {
-    font-size:  32px;
-}
+    @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Ubuntu",sans-serif;
+    }
+    body{
+        background: #D4D4D4;
+    }
+    .header a{
+        font-weight: 200px;
+        font-size: 30px;
+        border: none;
+        color: white;
+        text-decoration: none;
+    }
+    .container{
+        background: white;
+        padding: 10px;
+        margin: 20px;
+        border-radius: 10px;
+    }
+    .container span img{
+        width: 150px;
+        align-items: center;
+        justify-content: center;
+        display: flex;
 
-/* .container{
-    background: #667b7c;
+    }
+    .header li a{
+        font-weight: 400px;
+        font-size: 20px;
+        color:white;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        text-decoration: none;
+    }
+    .header{
+        background: #e24a5e;
+        justify-content: space-between;
+        display: flex;
+        align-items: center;
+        padding: 10px 10%;
+    }
+    .header  ul  li{
+    display: inline-block;
+    padding: 10px;
+    }
+    .header span {
+        font-size:  32px;
+    }
+    .header li i {
+        margin: 10px    ;
+    }
+
+/* Clock CSS */
+.clock_container{
+    font-size: 3rem;
+  font-weight: bold;
+  margin: 30px 20px;
+  background: #0554c2;
+  padding: 10px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.student_info span {
+    width: 200px;
+    padding: 100px;
+    height: 200px;
     border: 1px solid black;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    position: absolute;
+    margin-right: 15px;
+
+}
+.student_info {
+    display: flex;
+    padding: 10px ;
+    font-size: 22px;  
+    margin-bottom: 30px;
 }
 
-.container label{
-    color: white;
-    text-align: left;
-    width: 10px;
 
-} */
+.student {
+    display: flex;
+    flex-direction: column; 
+    width: 100% ;
+    gap: 10px;
+    justify-content: center;
+}
+
+.scanner {
+    margin-left: 10px;
+}
+form {
+    padding: 10px;
+}
+form .scan {
+    padding: 10px;
+}
+table{
+    display: flex;
+   border-collapse:collapse ;
+    width: 100%;
+}
+table tr td {
+    text-align: left;
+    padding: 10px;
+}
+form input {
+    padding: 20px;
+    border-radius: 10px;
+}
