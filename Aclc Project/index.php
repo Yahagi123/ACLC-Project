@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     <div class="container">
     <div class="student_info">
     <span> <?php 
-            if($rfid !== ''){
+            if($rfid !== " "){
                 if(mysqli_num_rows($result2) > 0){
                     foreach($result2 as $row2){
                         ?> 
@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             ?></span>
         <div class="student">
             <?php 
-            if($rfid !== ''){
+            if($rfid !== " "){
                 if(mysqli_num_rows($result2) > 0){
                     foreach($result2 as $row2){
                         ?> 
@@ -107,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         <table>
             <?php 
             
-            if($rfid !== ''){
+            if($rfid !== " "){
                 if(mysqli_num_rows($result2) > 0){
                     foreach($result2 as $rowDate){
                         ?> 
@@ -156,7 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     <td>Date Logged</td>
                 </tr>
                 <?php
-                 if($rfid !== ''){
+                 if($rfid !== " "){
                     if(mysqli_num_rows($result2) > 0){
                         foreach($result2 as $row2){
                             ?>
