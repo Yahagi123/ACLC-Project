@@ -7,10 +7,26 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $sql = "SELECT * FROM `student_create`";
     $result = mysqli_query($conn, $sql);
     
-    $sql2 = "SELECT * FROM `student_create` where USN = $rfid";
+    $sql2 = "SELECT *,DATE_FORMAT(time_in, '%h:%i %p') as dates,DATE_FORMAT(time_out, '%h:%i %p') as datess   FROM `student_create` where USN = $rfid";
     if($rfid !== ''){
         
     $result2 = mysqli_query($conn, $sql2);
+    
+    if(mysqli_num_rows($result2) > 0){
+        foreach($result2 as $row){
+            if($row['time_int'] == 1){
+                $sqlUpdate2 = "UPDATE student_create SET time_out = NOW(), time_int = 0 WHERE usn = $rfid";
+                
+            mysqli_query($conn, $sqlUpdate2);
+            }
+            if($row['time_int'] == 0){
+                $sqlUpdate = "UPDATE student_create SET time_in = NOW(), time_int = 1 WHERE usn = $rfid";
+    mysqli_query($conn, $sqlUpdate);
+
+            }
+
+        }
+    }
     }
 
     
@@ -49,7 +65,22 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
      <script src="script.js"></script>
     <div class="container">
     <div class="student_info">
-    <span> </span>
+    <span> <?php 
+            if($rfid !== ''){
+                if(mysqli_num_rows($result2) > 0){
+                    foreach($result2 as $row2){
+                        ?> 
+                        <p><?= $row2['Image'] ?></p>
+                        <?php
+                    }
+                }
+            }
+            else{
+                ?> <p>Image</p> 
+
+                <?php
+            }
+            ?></span>
         <div class="student">
             <?php 
             if($rfid !== ''){
@@ -60,7 +91,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         <p>USN :<?=$row2 ['USN']?></p>
                         <p>Course :<?=$row2 ['Course']?></p>
                         <p>Year :<?=$row2 ['Year']?></p>
-
                         <?php
                     }
                 }
@@ -75,10 +105,35 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             ?>
         </div>
         <table>
+            <?php 
+            
+            if($rfid !== ''){
+                if(mysqli_num_rows($result2) > 0){
+                    foreach($result2 as $rowDate){
+                        ?> 
+                        <tr>
+                            
+                        <td>Time In <br> <?= $rowDate['dates'] ?></td>
+                    <td>Time Out <br> <?= $rowDate['datess'] ?></td>
+                    <td>Date Logged</td>
+                        </tr>
+                        <?php
+                    }
+                }
+            }
+            else{
+                ?> 
+                <tr>
+                            
+                            <td>Time In</td>
+                        <td>Time Out</td>
+                        <td>Date Logged</td>
+                            </tr>
+                <?php
+            }
+            ?>
             <tr>
-                <td>Time In</td>
-                <td>Time Out</td>
-                <td>Date Logged</td>
+                <td></td>
             </tr>
             
         </table>
@@ -91,6 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         <table>
             <th>Recent</th>
                 <tr>
+                    <td>Image</td>
                     <td>Student Name</td>
                     <td>Student Id</td>
                     <td>Course</td>
@@ -105,7 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         foreach($result2 as $row2){
                             ?>
                             <tr>
-                            
+                            <td><?= $row2['Image']?></td> 
                             <td><?= $row2['student name'] ?></td>
                             <td><?=$row2 ['USN']?></td>
                             <td><?=$row2 ['Course']?></td>
