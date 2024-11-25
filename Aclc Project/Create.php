@@ -3,6 +3,7 @@ $emptyError="";
 $Create= "";
 if(isset($_POST["Create"])){
     require "./connect.php";
+    $image = $_POST['Image'];
     $Student = $_POST['Name'];
     $USN = $_POST['USN'];
     $Course = $_POST['Course'];
@@ -12,7 +13,7 @@ if(isset($_POST["Create"])){
         $emptyError= "There a Blank In the Page";
     }
     else{
-        $sql = "INSERT INTO `student_create`(`Student Name`, `USN`, `Course`, `Year`) VALUES ('$Student','$USN','$Course','$Year')";
+        $sql = "INSERT INTO `student_create`(`Image`,`Student Name`, `USN`, `Course`, `Year`) VALUES ('$image','$Student','$USN','$Course','$Year')";
         if($conn->query($sql)){
             $Create ="Succesfully Create New UID";
         }
