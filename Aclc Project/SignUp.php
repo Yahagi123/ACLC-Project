@@ -1,16 +1,21 @@
 <?php
     $NameError = "";
-    $emailError = "";
     $passwordError = "";
-    $CheckError = "";
+    $emailError = "";
     $Data_inserted ="";
-
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
+    if (isset($_POST["Signup"])){
         require "./connect.php";
         $username = $_POST['username'];
-        $email = $_POST['email'];
         $password = $_POST['password'];
+
+        $email = $_POST['email'];
+        $role = $_POST['role'];
+        
+        
+        $hash = password_hash($password , PASSWORD_DEFAULT);
+
         $password2 = $_POST['password_con'];
+        $role = $_POST['role'];
     
         //username error 
         // if(empty($username)){
@@ -56,15 +61,15 @@
 
         // else{ 
         $hash = password_hash($password, algo: PASSWORD_DEFAULT);
-        $sql = "INSERT INTO `user`(`Username`, `Email`, `Password`) VALUES ('$username','$email','$hash')";
+
+        $sql = "INSERT INTO `user`(`Username`, `Email`, `Password`, `Role`) VALUES ('$username','$email','$hash','$role')";
         if($conn->query($sql)){
-         $Data_inserted ="Sign In Successfull";
+            $Data_inserted =" Data Inserted";
         }
-         else{
-             die("connection error". $conn->error);
-         }
-     }
-    
+        else{
+            die("Connection failed"); 
+        }
+    }
 
 ?>
 <!DOCTYPE html>
@@ -108,8 +113,14 @@
                 <input type="password" name="password_con" id="password_con" placeholder="Confirm Password">
 
             </div>
+            <div class="label_container">
+                <select name="role" id="role">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
             <div class="submit">
-            <input type="submit" value="SignUp" name="SignUp">
+            <input type="submit" value="SignUp" name="submit" id="submit">
             <span style="color : green;"><?php echo $Data_inserted ?></span>
         </div>
         </form>
