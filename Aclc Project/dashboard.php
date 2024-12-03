@@ -8,16 +8,14 @@
     <link rel="stylesheet" href="sidebar.css">
 </head>
 <body>
-<script src="https://kit.fontawesome.com/cb73975b1a.js" crossorigin="anonymous"></script>
-    <div class="container">
-        <span> </span>
-        <span> </span>
-        <span> </span>
-        <span> </span>
-
+    <div class="header">
+        <span><i class="fa-regular fa-circle-xmark"></i></span>
     </div>
+<script src="https://kit.fontawesome.com/cb73975b1a.js" crossorigin="anonymous"></script>
     <div class="sidebar">
-        <header>CS31</header>
+        <header>CS31
+            <span></span>
+        </header>
             <ul>
                 <li><a href="dashboard.php"><i class="fa-regular fa-house"></i>Home</a></li>
                 <li><a href="attendance.php"><i class="fa-regular fa-rectangle-list"></i>Attendance</a></li>
@@ -32,5 +30,23 @@
                 <li style="background:red;"><a href="logout.php">Logout</a></li>
             </ul>
     </div>
+    <div class="box_container">
+        <div class="boxs">
+            <h2>Total Of School Facilities</h2>
+            <h2>---</h2>
+        </div>
+        <div class="boxs">
+            <h2>Total of Senior High</h2>
+            <h2>---</h2>
+        </div>
+        <div class="boxs">
+            <h2>Total of Collage</h2>
+            <h2>---</h2>
+        </div>
+        <div class="boxs">
+            <h2>Total of Teacher </h2>
+            <h2>---</h2>
+        </div>
+    </div>    
 </body>
 </html>

@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             $sqlInsertLog = "INSERT INTO rfid_logs (student_name, USN, course, year, time_in, time_out, date_logged, image) 
                              VALUES ('$studentName', '$rfid', '$course', '$year', '$timeIn', '$timeOut', '$dateLogged', '$image')";
             mysqli_query($conn, $sqlInsertLog);
-        }
+        }   
     }
 }
 ?>
@@ -183,5 +183,22 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             </table>
         </div>
     </div>
+    <script>
+        document.getElementById('submitBtn').addEventListener('click', function () {
+            const scanInput = document.getElementById('scan');
+            if (scanInput.value.trim() === '') {
+                alert('Please enter an RFID value!');
+                return;
+            }
+            
+            // Disable the form during delay
+            scanInput.disabled = true;
+
+            // Add delay before submitting the form
+            setTimeout(function () {
+                document.getElementById('rfidForm').submit();
+            }, 2000); // 2000 milliseconds (2 seconds) delay
+        });
+    </script>
 </body>
 </html>

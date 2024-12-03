@@ -10,6 +10,19 @@ body{
     background: #D4D4D4;
 }
 
+.header{
+    margin-left: 250px;
+    height: 73px;
+    width: 100%;
+    padding: 0 30px;
+    background-color: #000a64;
+    position: fixed;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .sidebar{
     position: fixed;
     left: 0 ;
@@ -40,10 +53,22 @@ body{
 .sidebar ul i{
     margin: .5rem;
 }
-
-
-.container span{
-    border: 1px solid black;
-    width: 100px;
-    height: 100px;
+.box_container {
+    color: white;
+    margin-left: 220px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-evenly;
+}
+.box_container .boxs{
+    border-radius: 20px;
+    margin-top: 100px;
+    border: 3px solid black;
+    padding: .8em;
+    background: #1C325B;
+}
+.header span i{
+  height: 40px;
 }
