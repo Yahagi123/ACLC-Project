@@ -10,12 +10,10 @@ if(isset($_POST["SignIn"])){
     $sql = "SELECT * FROM `user` WHERE Username = '$username'";
     $result  = $conn->query($sql);
     if($result->num_rows == 1){
-        if ($username === $validUsername && $password === $validPassword) {
         // Successful login
         $_SESSION['user'] = $username;
         header('Location: dashboard.php'); // Redirect to a dashboard or home page
         exit();
-    }
     }
     else{
         $userError ="Invalid Username";

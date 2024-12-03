@@ -9,6 +9,13 @@
 </head>
 <body>
 <script src="https://kit.fontawesome.com/cb73975b1a.js" crossorigin="anonymous"></script>
+    <div class="container">
+        <span> </span>
+        <span> </span>
+        <span> </span>
+        <span> </span>
+
+    </div>
     <div class="sidebar">
         <header>CS31</header>
             <ul>

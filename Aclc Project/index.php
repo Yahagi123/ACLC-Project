@@ -106,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 <td>Time In <br> <?= htmlspecialchars($rowDate['dates']) ?> </td>
                 <td>Time Out <br> 
                     <?php 
-                    if ($rowDate['datess'] == NULL) {
+                    if ($rowDate['dates'] == NULL) {
                         echo '---';  // Show placeholder when time_out is NULL
                     } else {
                         echo htmlspecialchars($rowDate['datess']);
@@ -140,6 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             <table>
                 <th>Recent</th>
                 <tr>
+                    <td></td>
                     <td>Image</td>
                     <td>Student Name</td>
                     <td>Student Id</td>
