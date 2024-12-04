@@ -72,3 +72,33 @@ body{
 .header span i{
   height: 40px;
 }
+.table-container {
+    overflow: hidden;
+    max-width: 600px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: white;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+thead {
+    background-color: #007BFF;
+    color: white;
+}
+th, td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+tbody {
+    display: block;
+    transition: transform 0.5s ease-in-out;
+}
+tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}

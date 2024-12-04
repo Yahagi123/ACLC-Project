@@ -11,7 +11,6 @@ if(isset($_POST["SignIn"])){
     $result  = $conn->query($sql);
     if($result->num_rows == 1){
         // Successful login
-        $_SESSION['user'] = $username;
         header('Location: dashboard.php'); // Redirect to a dashboard or home page
         exit();
     }

@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="header">
-        <span><i class="fa-regular fa-circle-xmark"></i></span>
+        <span></span>
     </div>
 <script src="https://kit.fontawesome.com/cb73975b1a.js" crossorigin="anonymous"></script>
     <div class="sidebar">
@@ -47,6 +47,26 @@
             <h2>Total of Teacher </h2>
             <h2>---</h2>
         </div>
-    </div>    
+
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td>Alice</td><td>25</td></tr>
+                <tr><td>2</td><td>Bob</td><td>30</td></tr>
+                <tr><td>3</td><td>Charlie</td><td>35</td></tr>
+                <tr><td>4</td><td>Diana</td><td>28</td></tr>
+                <tr><td>5</td><td>Eve</td><td>40</td></tr>
+            </tbody>
+        </table>
+    </div>
+
 </body>
 </html>

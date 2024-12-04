@@ -156,8 +156,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 $historyResult = mysqli_query($conn, $sqlHistory);
                 if (mysqli_num_rows($historyResult) > 0) {
                     while ($historyRow = mysqli_fetch_assoc($historyResult)) {
-                        $timeIn = date('Y-m-d H:i:s', strtotime($historyRow['time_in']));
-                        $timeOut = ($historyRow['time_out'] == NULL) ? '---' : date('Y-m-d H:i:s', strtotime($historyRow['time_out']));
+                        $timeIn = date('H:i:s', strtotime($historyRow['time_in']));
+                        $timeOut = ($historyRow['time_out'] == NULL) ? '---' : date('H:i:s', strtotime($historyRow['time_out']));
                         $dateLogged = date('Y-m-d', strtotime($historyRow['date_logged'])); // Assuming date_logged stores the log date
                         ?>
                         <tr>

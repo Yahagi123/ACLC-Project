@@ -1,77 +1,51 @@
 <?php
-    $NameError = "";
-    $passwordError = "";
-    $emailError = "";
-    $Data_inserted ="";
-    if (isset($_POST["Signup"])){
-        require "./connect.php";
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+$NameError = "";
+$passwordError = "";
+$emailError = "";
+$Data_inserted = "";
 
-        $email = $_POST['email'];
-        $role = $_POST['role'];
-        
-        
-        $hash = password_hash($password , PASSWORD_DEFAULT);
+if (isset($_POST["submit"])) {
+    require "./connect.php";
 
-        $password2 = $_POST['password_con'];
-        $role = $_POST['role'];
-    
-        //username error 
-        // if(empty($username)){
-        //     $NameError = 'Username Required';
-        // }
-        // elseif(!preg_match(('/^[a-zA-Z]+$/'), $username)){
-        //     $NameError  ="Name should contain Char and Space";
-        // }
-        // elseif(!preg_match(("/^[0-9]$/"), $username)){
-        //     $NameError = "Name should have a Number";
-        // }
+    // Validate and sanitize inputs
+    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
+    $password2 = $_POST['password_con'];
+    $role = $_POST['role'];
 
-        // //Email error
-        // if(empty($email)){
-        //     $emailError = "The Email is required";
-        // }
-        // elseif(filter_var($email, FILTER_VALIDATE_EMAIL) === false){
-        //     $EmailError = "Invalid Email";
-        // }
-        // //Password Error
-        // if(empty($password)){
-        //     $passwordError = "The password is required";
-        // }
-        // elseif(strlen($password) <= 8){
-        //     $PasswordError = "Password Must Contain 8-12 letter";
-        // }
-        // elseif(!preg_match(("#[0-9]#"), $password)){
-        //     $passwordError = "Password must required number";
-        // }
-        // elseif(!preg_match(("#[a-z]#"), $password)){
-        //     $passwordError = "Password required one small letter";
-        // }
-        // elseif(!preg_match(("#[A-Z]#"), $password)){
-        //     $PasswordError = "Password required one big letter";
-        // }
-        // elseif(!preg_match(("[@_!#$%^&*()<>?/|}{~:]"), $password)){
-        //     $PasswordError = "Password Required Special Character";
-        // }
-        // //Same Password Accept
-        // elseif($password2 != $password){
-        //     $passwordError = "Password Is Incorrect";
-        // }
-
-        // else{ 
-        $hash = password_hash($password, algo: PASSWORD_DEFAULT);
-
-        $sql = "INSERT INTO `user`(`Username`, `Email`, `Password`, `Role`) VALUES ('$username','$email','$hash','$role')";
-        if($conn->query($sql)){
-            $Data_inserted =" Data Inserted";
-        }
-        else{
-            die("Connection failed"); 
-        }
+    // Basic validations
+    if (empty($username)) {
+        $NameError = "Username is required.";
+    }
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $emailError = "A valid email is required.";
+    }
+    if (empty($password) || empty($password2)) {
+        $passwordError = "Both password fields are required.";
+    } elseif ($password !== $password2) {
+        $passwordError = "Passwords do not match.";
     }
 
+    if (empty($NameError) && empty($emailError) && empty($passwordError)) {
+        // Hash the password
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+
+        // Use prepared statements to insert data securely
+        $stmt = $conn->prepare("INSERT INTO `user` (`Username`, `Email`, `Password`, `Role`) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $username, $email, $hash, $role);
+
+        if ($stmt->execute()) {
+            $Data_inserted = "Data Inserted Successfully.";
+        } else {
+            $Data_inserted = "Error: " . $stmt->error;
+        }
+
+        $stmt->close();
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
