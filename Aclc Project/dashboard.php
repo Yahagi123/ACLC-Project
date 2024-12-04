@@ -67,6 +67,6 @@
             </tbody>
         </table>
     </div>
-
+    <script src="sidebar.js"></script>
 </body>
 </html>
