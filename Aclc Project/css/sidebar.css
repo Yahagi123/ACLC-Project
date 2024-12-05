@@ -6,72 +6,112 @@
     font-family: "Ubuntu",sans-serif;
     font-weight: 400px;
 }
-body{
-    background: #D4D4D4;
+:root {
+    --primary-color: #4A90E2;
+    --secondary-color: #f4f4f4;
+    --text-color: #333;
+    --accent-color: #FF6F61;
 }
 
-.header{
-    margin-left: 250px;
-    color: white;
-    height: 61px;
-    width: 100%;
-    padding: 0 10px;
-    background-color: #000a64;
-    position: fixed;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    background: var(--secondary-color);
+    color: var(--text-color);
 }
 
-.sidebar{
-    position: fixed;
-    left: 0 ;
-    width: 250px;
-    height: 100%;
-    background: #0B192C;
-}
-.sidebar header {
+.header {
+    background: var(--primary-color);
     color: white;
-    font-size: 22px;
-    font-weight: 500px;
     text-align: center;
-    line-height: 60px;
-    background: #000a64;
-    user-select: none;
+    padding: 1rem;
 }
-.sidebar ul a{
-    display: block;
-    height: 100%;
-    line-height: 60px;
-    width: 100%;
-    font-size: 16px;
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: var(--primary-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 2rem 1rem;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar header {
+    font-size: 1.5rem;
     color: white;
-    padding-left: 40px;
+    margin-bottom: 2rem;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 1rem 0;
+    position: relative;
+}
+
+.sidebar ul li a {
     text-decoration: none;
-        
-}
-.sidebar ul i{
-    margin: .5rem;
-}
-.box_container {
     color: white;
-    margin-left: 220px;
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: space-evenly;
+    padding: 0.5rem;
+    border-radius: 5px;
+    transition: background 0.3s ease;
 }
-.box_container .boxs{
-    border-radius: 20px;
-    margin-top: 100px;
-    border: 3px solid black;
-    padding: .8em;
-    background: #1C325B;
+
+.sidebar ul li a:hover {
+    background: var(--accent-color);
+}
+
+.sidebar ul li a i {
+    margin-right: 0.5rem;
+}
+
+/* Dropdown Styles */
+.student_drop {
+    display: none;
+    list-style: none;
+    padding-left: 1.5rem;
+    margin: 0;
+}
+
+.student_drop li {
+    margin: 0.5rem 0;
+}
+
+.dropdown:hover .student_drop {
+    display: block;
+}
+
+.student_drop a {
+    font-size: 0.9rem;
+    color: white;
+}
+
+/* Additional Styling */
+.box_container {
+    margin-left: 270px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 2rem;
+}
+
+.boxs {
+    background: white;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
 }
 
 .carousel-container h2{
+    color: white;
     background: #181f2b;
     align-items: center;
     text-align: center;
@@ -80,7 +120,7 @@ body{
     border-radius: 10px;
     margin-top: 30px;
     margin-left: 270px;
-    max-width: 600px;
+    max-width: 830px;
     overflow: hidden;
     position: relative;
 }
@@ -91,8 +131,8 @@ body{
 .table-container {
     padding: 10px;
     min-width: 100%;
-    background: #8a8888;
-    border: 1px solid black;
+    background: #ffffff;
+    border: 2px solid black;
 }
 table {
     width: 100%;
@@ -132,3 +172,33 @@ th{
 .survey_box:nth-child(2) {
     top: 140px; /* Adjust spacing for the second survey box */
 }
+.buttons {
+    border: 1px solid black;
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+.button a{
+    text-decoration: none;
+    color: #007bff;
+    font-size: 16px;
+    margin-left: auto;
+}
+  button {
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+  }
+  button:hover {
+    background-color: #0056b3;
+}
+.buttons a{
+    margin: 10px;
+}
+
