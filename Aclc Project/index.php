@@ -151,6 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     <td>Date</td> <!-- Added Date column -->
                 </tr>
                 <?php
+                require "./connect.php";
                 // Fetch only 4 recent logs from rfid_logs table
                 $sqlHistory = "SELECT * FROM rfid_logs ORDER BY date_logged DESC LIMIT 4"; // Fetch top 4 records
                 $historyResult = mysqli_query($conn, $sqlHistory);

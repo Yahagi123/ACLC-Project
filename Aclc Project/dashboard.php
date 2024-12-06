@@ -9,8 +9,15 @@
     <link rel="stylesheet" href="css/sidebar.css">
 </head>
 <body>
-    <div class="header">
-        <h2>Admin Dashboard</h2>
+    <div class="navbar">
+        <h2>Attendance System Admin</h2>
+      <div class="nav-links">
+        <ul>
+          <li><a href="#">Notification</a></li>
+          <li><a href="#">Message</a></li>
+          <li><a href="#">Profile</a></li>
+        </ul>
+      </div>
     </div>
     <div class="sidebar">
         <header>CS31</header>
@@ -24,9 +31,9 @@
                     <li><a href="collage.php"><i class="fas fa-user-graduate"></i> College</a></li>
                 </ul>
             </li>
-            <li><a href="#"><i class="fas fa-calendar"></i> Calendar</a></li>
+            <li><a href="Calendar.php"><i class="fas fa-calendar"></i> Calendar</a></li>
             <li><a href="#"><i class="fas fa-clock"></i> Schedule</a></li>
-            <li><a href="#"><i class="fas fa-chalkboard-teacher"></i> Teacher</a></li>
+            <li><a href="teacher.php"><i class="fas fa-chalkboard-teacher"></i> Teacher</a></li>
             <li style="background:red;"><a href="logout.php">Logout</a></li>
         </ul>
     </div>

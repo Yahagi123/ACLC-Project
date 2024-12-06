@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Ubuntu",sans-serif;
+    font-weight: 400px;
+}
+:root {
+    --primary-color: #4A90E2;
+    --secondary-color: #f4f4f4;
+    --text-color: #333;
+    --accent-color: #FF6F61;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    background: var(--secondary-color);
+    color: var(--text-color);
+}
+
+.custom-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primary-color); /* Dark background */
+    padding: 10px 20px; /* Padding for spacing */
+    color: white; /* Text color */
+}
+
+.custom-navbar button {
+    background-color: #168500; /* Button background */
+    color: white;
+    border: none;
+    font-size: 20px;
+    padding: 5px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.custom-navbar button a {
+    color: white;
+    text-decoration: none; /* Remove underline */
+}
+
+.custom-navbar .nav-links ul {
+    list-style: none; /* Remove bullet points */
+    display: flex;
+    gap: 10px; /* Spacing between elements */
+    margin: 0;
+    padding: 0;
+}
+
+.custom-navbar input[type="search"] {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.custom-navbar select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+th, td {
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background: var(--primary-color);
+    color: white;
+    text-transform: uppercase;
+}
+
+tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+tr:hover {
+    background: var(--accent-color);
+    color: white;
+}

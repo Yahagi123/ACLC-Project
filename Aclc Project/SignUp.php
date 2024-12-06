@@ -89,7 +89,8 @@ if (isset($_POST["submit"])) {
             </div>
             <div class="label_container">
                 <select name="role" id="role">
-                    <option value="user">User</option>
+                    <option value="user">Teacher</option>
+                    <option value="Faculty">Faculty Staff</option>
                     <option value="admin">Admin</option>
                 </select>
             </div>
