@@ -31,7 +31,20 @@
                     <li><a href="collage.php"><i class="fas fa-user-graduate"></i> College</a></li>
                 </ul>
             </li>
-            <li><a href="Calendar.php"><i class="fas fa-calendar"></i> Calendar</a></li>
+            <li class="dropdown">
+                <a href="#"><i class="fas fa-users"></i>Record</a>
+                <ul class="student_drop">
+                    <li><a href="Senior.php"><i class="fas fa-user-graduate"></i> Senior High</a></li>
+                    <li><a href="collage.php"><i class="fas fa-user-graduate"></i> College</a></li>
+                </ul>
+            </li>           
+            <li class="dropdown">
+            <a href="#"><i class="fas fa-users"></i> Student</a>
+                <ul class="student_drop">
+                    <li><a href="Senior.php"><i class="fas fa-user-graduate"></i>Student Record</a></li>
+                    <li><a href="collage.php"><i class="fas fa-user-graduate"></i>Teacher Record</a></li>
+                </ul>
+            <li><a href="Calendar.php"><i class="fas fa-calendar"></i>Analysis</a></li>
             <li><a href="#"><i class="fas fa-clock"></i> Schedule</a></li>
             <li><a href="teacher.php"><i class="fas fa-chalkboard-teacher"></i> Teacher</a></li>
             <li style="background:red;"><a href="logout.php">Logout</a></li>

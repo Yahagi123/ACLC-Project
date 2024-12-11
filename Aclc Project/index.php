@@ -55,8 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     <div class="header">
         <span>Attendance System</span>
         <ul>
-            <li><a href="scan.php"><i class="fa-solid fa-eye"></i>Scan</a></li>
-            <li><a href="#"><i class="fa-solid fa-circle-exclamation"></i>About</a></li>
             <li><a href="SignIn.php"><i class="fa-solid fa-user"></i>Sign In</a></li>
         </ul>
     </div>

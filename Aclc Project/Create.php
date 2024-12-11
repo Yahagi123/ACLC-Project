@@ -110,6 +110,27 @@ if (isset($_POST["Create"])) {
                     <option value="ENTREP">Entrepreneurship</option>
                     <option value="ACT">ACT</option>
                 </select>
+                <label for="Course">of</label>
+                <select name="course" id="course">
+                    <option value="A1">11A</option>
+                    <option value="A2">12A</option>
+                    <option value="A2">12B</option>
+                    <option value="A2">12B</option>
+                    <option value="A2">21A</option>
+                    <option value="A2">22A</option>
+                    <option value="A2">21B</option>
+                    <option value="A2">22B</option>
+                    <option value="A2">31A</option>
+                    <option value="A2">31B</option>
+                    <option value="A2">32A</option>
+                    <option value="A2">32A</option>
+                    <option value="A2">32B</option>
+                    <option value="A2">32B</option>
+                    <option value="A2">41A</option>
+                    <option value="A2">42A</option>
+                    <option value="A2">42B</option>
+                    <option value="A2">42B</option>
+                </select>
             </div>
             <div class="label_container">
                 <label for="Date">Birth Date</label>
@@ -129,13 +150,6 @@ if (isset($_POST["Create"])) {
             </div>
         </form>
 
-        <!-- Display the uploaded image if available -->
-        <?php if ($displayImage): ?>
-            <div class="image_display">
-                <h3>Uploaded Image:</h3>
-                <img src="<?php echo $displayImage; ?>" alt="Uploaded Image" style="max-width: 300px;">
-            </div>
-        <?php endif; ?>
     </div>
 </body>
 </html>
