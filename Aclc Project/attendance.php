@@ -6,7 +6,7 @@
     <title>RFID Attendance Monitoring Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="attendance.css">
 </head>
 <body>
     <div class="navbar">
@@ -57,7 +57,14 @@
 
     <div class="content">
         <div class="content-selecting">
-
+        <h2>Student Attendance</h2>
+        <p>dashboard/attendance/studet_attendance</p>
+        <div class="button-navbar">
+            <button>Home</button>
+            <button>About</button>
+            <button>Services</button>
+            <button>Contact</button>
+        </div>  
         </div>
     </div>
     <script>

@@ -81,8 +81,6 @@ body {
     color: var(--accent-color);
 }
 
-/* Sidebar */
-/* Sidebar */
 .sidebar {
     width: 70px; /* Reduced width */
     height: 100vh;
@@ -176,12 +174,24 @@ body {
 /* Content Wrapper to Avoid Overlap */
 .content {
     align-content: flex-start;
-    margin-left: 100px;
+    margin-left: 70px;
     display: flex;
     flex-direction: row;
     margin-top: 70px; /* Add margin to match the navbar height */
     padding: 20px;
     transition: margin 0.3s ease-in-out;
+}
+.burger img {
+    transition: transform 0.3s ease;
+}
+
+.sidebar.open + .navbar .burger img {
+    transform: rotate(90deg);
+}
+
+/* Sidebar and Content Margin Adjustment */
+.sidebar.open ~ .content {
+    margin-left: 277px;
 }
 
 /* Dropdown Styles */
@@ -209,6 +219,27 @@ body {
 .student_drop a:hover {
     color: var(--accent-color);
 }
-.content-selection{
-  
+
+.content-selecting{
+    margin-left: 20px;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    background: white;
+    width: 100%;
+    height: 80vh;
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+.navigation{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    color: white;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: var(--box-shadow);
 }

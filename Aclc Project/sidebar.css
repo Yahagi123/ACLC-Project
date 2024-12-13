@@ -80,8 +80,6 @@ body {
 .navbar .nav-links ul li a:hover {
     color: var(--accent-color);
 }
-
-/* Sidebar */
 /* Sidebar */
 .sidebar {
     width: 70px; /* Reduced width */
