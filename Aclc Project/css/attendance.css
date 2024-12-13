@@ -1,67 +1,90 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
+}
+
 :root {
-    --primary-color: #4A90E2;
+    --primary-color: #da8b25;
     --secondary-color: #f4f4f4;
     --text-color: #333;
     --accent-color: #FF6F61;
-}
-.nav-links a{
-    color: black;
-    text-decoration: none;
+    --hover-color: #e2a864;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --border-radius: 10px;
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
     margin: 0;
+    overflow-x: hidden;
     background: var(--secondary-color);
     color: var(--text-color);
 }
+
 /* Navbar Styling */
-.main_container.navbar h2 {
-    margin-left: 255px;
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primary-color);
+    padding: 10px 20px;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: var(--box-shadow);
 }
-.main_container .navbar {
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--primary-color);
-  padding: 10px 20px;
-  color: white;
+.navbar h2 {
+    font-size: 1.5rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
 }
 
-.navbar  h2 {
-  margin: 0;
+.navbar .left-section {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .burger {
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.navbar .burger img {
+    width: 25px;
+    height: 25px;
 }
 
 .navbar .nav-links ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  gap: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
 }
 
-.navbar .nav-links ul li {
-  display: inline;
+.navbar .nav-links ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s ease;
 }
 
-.navbar .nav-links ul li button {
-    margin: 10px;
-    padding: 10px 20px;
-  border: none;
-  color: rgb(0, 0, 0);
-  font-weight: bold;
-  border-radius: 10px;
-  background: #00be8f;
+.navbar .nav-links ul li a:hover {
+    color: var(--accent-color);
 }
 
-.navbar .nav-links ul li button:hover {
-  text-decoration: underline;
-}
-
+/* Sidebar */
+/* Sidebar */
 .sidebar {
-    width: 250px;
+    width: 70px; /* Reduced width */
     height: 100vh;
     background-color: var(--primary-color);
     color: white;
@@ -69,127 +92,123 @@ body {
     top: 0;
     left: 0;
     padding: 20px 10px;
-  }
-  
-  .sidebar header {
+    transform: translateX(0); /* Sidebar always visible */
+    transition: width 0.3s ease-in-out;
+    box-shadow: var(--box-shadow);
+    overflow: hidden; /* Hide overflowing text */
+}
+
+.sidebar.open {
+    width: 250px; /* Full width when open */
+}
+
+.sidebar header {
     font-size: 24px;
     text-align: center;
     margin-bottom: 20px;
-  }
-  
-  .sidebar ul {
+    opacity: 0; /* Hide header text */
+    transition: opacity 0.3s ease;
+}
+
+.sidebar.open header {
+    opacity: 1; /* Show header text when open */
+}
+
+.sidebar ul {
     list-style: none;
     padding: 0;
-  }
-  
-  .sidebar ul li {
+}
+
+.sidebar ul li {
     margin: 10px 0;
-  }
-  
-  .sidebar ul li a {
+}
+
+.sidebar ul li a {
     text-decoration: none;
     color: white;
     font-size: 18px;
-    display: block;
-    padding: 10px 15px;
-    border-radius: 5px;
-    transition: background 0.3s ease;
-  }
-  
-  .sidebar ul li a:hover {
-    background-color: #555;
-  }
-  
-  .sidebar ul li.dropdown ul {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the icon */
+    padding: 10px;
+    border-radius: var(--border-radius);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.sidebar ul li a img {
+    width: 24px;
+    height: 24px;
+    margin-right: 0; /* Remove margin for text alignment */
+}
+
+.sidebar ul li a:hover {
+    background-color: var(--hover-color);
+    color: var(--secondary-color);
+}
+
+.sidebar.open ul li a {
+    justify-content: flex-start; /* Align items when sidebar expands */
+    padding-left: 15px; /* Add padding for text alignment */
+}
+
+.sidebar ul li a span {
+    display: none; /* Hide text */
+    transition: display 0.3s ease;
+}
+
+.sidebar.open ul li a span {
+    display: inline-block; /* Show text when sidebar expands */
+}
+
+/* Sidebar Hover Effect */
+.sidebar:hover {
+    width: 250px; /* Expand on hover */
+}
+
+.sidebar:hover header {
+    opacity: 1; /* Show header text on hover */
+}
+
+.sidebar:hover ul li a span {
+    display: inline-block; /* Show text on hover */
+}
+
+/* Content Wrapper to Avoid Overlap */
+.content {
+    align-content: flex-start;
+    margin-left: 100px;
+    display: flex;
+    flex-direction: row;
+    margin-top: 70px; /* Add margin to match the navbar height */
+    padding: 20px;
+    transition: margin 0.3s ease-in-out;
+}
+
+/* Dropdown Styles */
+.student_drop {
     display: none;
     list-style: none;
+    padding-left: 1.5rem;
     margin: 0;
-    padding-left: 20px;
-  }
-  
-  .sidebar ul li.dropdown:hover ul {
+}
+
+.student_drop li {
+    margin: 0.5rem 0;
+}
+
+.dropdown:hover .student_drop {
     display: block;
-  }
-  
-  .sidebar ul li.dropdown ul li a {
-    font-size: 16px;
-    padding: 5px 15px;
-  }
-  
-  .sidebar ul li[style] a {
-    background-color: red;
-    text-align: center;
-  }
-  
-  /* Content Wrapper to Avoid Overlap */
-  .content {
-    margin-left: 270px;
-    padding: 20px;
-  }
-.main_container {
-    margin-left: 270px;
-    padding: 20px;
 }
 
-.table-container {
-    margin-top: 20px;
-    background: white;
-    padding: 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
+.student_drop a {
     font-size: 0.9rem;
-}
-
-th, td {
-    padding: 1rem;
-    border-bottom: 1px solid #ddd;
-}
-
-th {
-    background: var(--primary-color);
     color: white;
-    text-transform: uppercase;
+    transition: color 0.3s ease;
 }
 
-tr:nth-child(even) {
-    background: #f9f9f9;
+.student_drop a:hover {
+    color: var(--accent-color);
 }
-
-tr:hover {
-    background: var(--accent-color);
-    color: white;
-}
-.pagination {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.page-item {
-  display: inline-block;
-  margin-right: 5px;
-}
-
-.page-link {
-  padding: 8px 12px;
-  background-color: #f8f9fa;
-  border: 1px solid #ddd;
-  color: #007bff;
-  text-decoration: none;
-}
-
-.page-item.disabled .page-link {
-  color: #6c757d;
-  pointer-events: none;
-}
-
-.page-item.active .page-link {
-  background-color: #007bff;
-  color: #fff;
+.content-selection{
+  
 }

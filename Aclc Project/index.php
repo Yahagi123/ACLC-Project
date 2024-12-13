@@ -1,3 +1,45 @@
+<?php
+$rfid = ''; // Initialize $rfid to avoid "undefined variable" warnings.
+
+if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+    require "./connect.php";
+    $rfid = mysqli_real_escape_string($conn, $_POST['scan']); // Sanitize user input
+
+    if ($rfid !== '') {
+        // Fetch data for the scanned USN (student ID)
+        $sql2 = "SELECT *, DATE_FORMAT(time_in, '%h:%i %p') AS dates, DATE_FORMAT(time_out, '%h:%i %p') AS datess 
+                 FROM student_create WHERE USN = '$rfid'";
+        $result2 = mysqli_query($conn, $sql2);
+
+        if (mysqli_num_rows($result2) > 0) {
+            foreach ($result2 as $row) {
+                if ($row['time_int'] == 1) {
+                    // If the student has already clocked in (time_int = 1), clock them out
+                    $sqlUpdate2 = "UPDATE student_create SET time_out = NOW(), time_int = 0 WHERE USN = '$rfid'";
+                    mysqli_query($conn, $sqlUpdate2);
+                } elseif ($row['time_int'] == 0) {
+                    // If the student has clocked out (time_int = 0), clock them in
+                    $sqlUpdate = "UPDATE student_create SET time_in = NOW(), time_out = NULL, time_int = 1 WHERE USN = '$rfid'";
+                    mysqli_query($conn, $sqlUpdate);
+                }
+            }
+
+            // Insert into the rfid_logs table
+            $studentName = mysqli_real_escape_string($conn, $row['student name']);
+            $course = mysqli_real_escape_string($conn, $row['Course']);
+            $year = mysqli_real_escape_string($conn, $row['Year']);
+            $image = isset($row['Image']) ? mysqli_real_escape_string($conn, $row['Image']) : 'path/to/default-image.jpg';
+            $timeIn = date('Y-m-d H:i:s'); // Assuming the current time as the time of logging
+            $timeOut = $row['time_out'] ? $row['time_out'] : NULL;
+            $dateLogged = date('Y-m-d');
+
+            $sqlInsertLog = "INSERT INTO rfid_logs (student_name, USN, course, year, time_in, time_out, date_logged, image) 
+                             VALUES ('$studentName', '$rfid', '$course', '$year', '$timeIn', '$timeOut', '$dateLogged', '$image')";
+            mysqli_query($conn, $sqlInsertLog);
+        }   
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en" class="h-full">
 <head>
