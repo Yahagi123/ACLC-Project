@@ -218,34 +218,21 @@ body {
 .student_drop a:hover {
     color: var(--accent-color);
 }
-<<<<<<< Updated upstream
-<<<<<<<< Updated upstream:Aclc Project/attendance.css
-
 .content-selecting{
-    margin-left: 20px;
-========
-=======
->>>>>>> Stashed changes
+    margin-left: 20px;}
 .sidebar.open ~ .content {
     margin-left: 277px;
 }
 .content-selecting{
     margin-left: 20px;
     display: flex;
-<<<<<<< Updated upstream
->>>>>>>> Stashed changes:Aclc Project/css/Teacher_attendance.css
-=======
 }
 .content-selecting{
     margin-left: 20px;
->>>>>>> Stashed changes
     box-shadow: var(--box-shadow);
     border-radius: var(--border-radius);
     background: white;
     width: 100%;
-<<<<<<< Updated upstream
-<<<<<<<< Updated upstream:Aclc Project/attendance.css
-=======
     padding: 20px;
     transition: transform 0.3s ease;
 }
@@ -317,13 +304,6 @@ table tbody tr:nth-child(even) {
 .navigation ul li a:hover {
     color: var(--accent-color);
 }
-{
->>>>>>> Stashed changes
-    height: 80vh;
-    padding: 20px;
-    transition: transform 0.3s ease;
-}
-
 .navigation{
     display: flex;
     justify-content: space-between;
@@ -335,8 +315,6 @@ table tbody tr:nth-child(even) {
     width: 100%;
     z-index: 1000;
     box-shadow: var(--box-shadow);
-<<<<<<< Updated upstream
-========
     padding: 20px;
     transition: transform 0.3s ease;
 }
@@ -348,7 +326,4 @@ table tbody tr:nth-child(even) {
     align-items: center;
     text-align: center;
     font-size: 12px;
->>>>>>>> Stashed changes:Aclc Project/css/Teacher_attendance.css
-=======
->>>>>>> Stashed changes
 }
