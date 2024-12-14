@@ -6,15 +6,7 @@
     <title>RFID Attendance Monitoring Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<<<<<<< Updated upstream
-    <link rel="stylesheet" href="attendance.css">
-=======
-<<<<<<< HEAD
     <link rel="stylesheet" href="css/attendance.css">
-=======
-    <link rel="stylesheet" href="attendance.css">
->>>>>>> dd02decfc3014493abd6506852e4df3c0ee7c55b
->>>>>>> Stashed changes
 </head>
 <body>
     <div class="navbar">
@@ -64,9 +56,6 @@
     </div>
 
     <div class="content">
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
         <div class="attendance-section" id="teacher-attendance">
             <h2>Student Attendance</h2>
             <div class="navigation">
@@ -129,8 +118,6 @@
                     ?>
                 </tbody>
             </table>
-=======
->>>>>>> Stashed changes
         <div class="content-selecting">
         <h2>Student Attendance</h2>
         <p>dashboard/attendance/studet_attendance</p>
@@ -140,10 +127,6 @@
             <button>Services</button>
             <button>Contact</button>
         </div>  
-<<<<<<< Updated upstream
-=======
->>>>>>> dd02decfc3014493abd6506852e4df3c0ee7c55b
->>>>>>> Stashed changes
         </div>
     </div>
 
