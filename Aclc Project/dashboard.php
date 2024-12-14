@@ -11,17 +11,18 @@
 <body>
     <div class="navbar">
         <div class="left-section">
-            <h2>Attendance System Admin</h2>
+        <img src="./uploads/logo.png" alt="" width="40px" style="margin-right: 10px;">
+            <h2>ACLC Administrator</h2>
             <div class="burger" onclick="toggleSidebar()">
                 <img width="25" height="25" src="https://img.icons8.com/ios-filled/50/menu--v1.png" alt="menu" />
             </div>
         </div>
         <div class="nav-links">
             <ul>
-                <li><a href="#">Refresh</a></li>
-                <li><a href="#">Notification</a></li>
-                <li><a href="#">Message</a></li>
-                <li><a href="#">Profile</a></li>
+                <li><a href="#"><img width="30" height="30" src="https://img.icons8.com/ios/50/refresh.png" alt="refresh"/></a></li>
+                <li><a href="#"><img width="30" height="30" src="https://img.icons8.com/ios/50/appointment-reminders.png" alt="appointment-reminders"/></a></li>
+                <li><a href="#"><img width="30" height="30" src="https://img.icons8.com/windows/32/chat.png" alt="chat"/></a></li>
+                <li><a href="#"><img width="30" height="30" src="https://img.icons8.com/windows/32/gender-neutral-user.png" alt="gender-neutral-user"/></a></li>
             </ul>
         </div>
     </div>
@@ -50,7 +51,6 @@
                 </ul>
             </li>
             <li><a href="Report.php"><img width="24" height="24" src="https://img.icons8.com/ios/50/bar-chart--v1.png" alt="bar-chart--v1"/><span>Reports</span></a></li>
-            <li><a href="teacher.php"><img width="24" height="24" src="https://img.icons8.com/windows/32/training.png" alt="training"/><span>Teacher</span></a></li>
             <li style="background:red;"><a href="logout.php">Logout</a></li>
         </ul>
     </div>

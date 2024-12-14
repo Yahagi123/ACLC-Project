@@ -13,12 +13,23 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
         if (mysqli_num_rows($result2) > 0) {
             foreach ($result2 as $row) {
+                // Check if the student has already clocked in (time_int = 1)
                 if ($row['time_int'] == 1) {
-                    // If the student has already clocked in (time_int = 1), clock them out
+                    // If the student has already clocked in, clock them out
                     $sqlUpdate2 = "UPDATE student_create SET time_out = NOW(), time_int = 0 WHERE USN = '$rfid'";
                     mysqli_query($conn, $sqlUpdate2);
-                } elseif ($row['time_int'] == 0) {
-                    // If the student has clocked out (time_int = 0), clock them in
+                    $attendanceStatus = 'Clocked Out';
+                } else {
+                    // If the student has clocked out (time_int = 0), check for late attendance
+                    $currentTime = new DateTime();
+                    $cutoffTime = new DateTime('09:00 AM'); // Define cutoff time (9:00 AM)
+                    if ($currentTime > $cutoffTime) {
+                        $attendanceStatus = 'Late';
+                    } else {
+                        $attendanceStatus = 'Present';
+                    }
+                    
+                    // Clock them in and update the status
                     $sqlUpdate = "UPDATE student_create SET time_in = NOW(), time_out = NULL, time_int = 1 WHERE USN = '$rfid'";
                     mysqli_query($conn, $sqlUpdate);
                 }
@@ -33,13 +44,19 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             $timeOut = $row['time_out'] ? $row['time_out'] : NULL;
             $dateLogged = date('Y-m-d');
 
-            $sqlInsertLog = "INSERT INTO rfid_logs (student_name, USN, course, year, time_in, time_out, date_logged, image) 
-                             VALUES ('$studentName', '$rfid', '$course', '$year', '$timeIn', '$timeOut', '$dateLogged', '$image')";
+            // Add attendance status (Late or Absent if not clocked in)
+            if (empty($attendanceStatus)) {
+                $attendanceStatus = 'Absent';
+            }
+
+            $sqlInsertLog = "INSERT INTO rfid_logs (student_name, USN, course, year, time_in, time_out, date_logged, image, attendance_status) 
+                             VALUES ('$studentName', '$rfid', '$course', '$year', '$timeIn', '$timeOut', '$dateLogged', '$image', '$attendanceStatus')";
             mysqli_query($conn, $sqlInsertLog);
         }   
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en" class="h-full">
 <head>
@@ -85,22 +102,21 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
     <!-- Navigation -->
     <nav class="bg-white shadow-md">
-        <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex">
-                    <div class="flex-shrink-0 flex items-center">
-                        <h1 class="text-2xl font-bold text-blue-600">Attendance System</h1>
+            <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex">
+                        <div class="flex-shrink-0 flex items-center">
+                            <img src="./uploads/logo.png" alt="" width="40px">
+                            <h1 class="text-2xl font-bold text-blue-600 ml-5">Attendance System</h1>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <a href="SignIn.php" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-300 flex items-center">
+                            <i class="fa-solid fa-user mr-2"></i>Sign In</a>
                     </div>
                 </div>
-                <div class="flex items-center">
-                    <a href="SignIn.php" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-300 flex items-center">
-                        <i class="fa-solid fa-user mr-2"></i>Sign In
-                    </a>
-                </div>
             </div>
-        </div>
-    </nav>
-
+        </nav>
     <!-- Main Container -->
     <div class="full-screen-container max-w-full mx-auto px-4 sm:px-6 lg:px-8 mt-4">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 h-full">
@@ -137,57 +153,79 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             </div>
 
             <!-- RFID Scanner -->
-            <div class="bg-white shadow-lg rounded-lg p-4 h-full flex items-center">
-                <form action="index.php" method="post" class="flex w-full">
-                    <input 
-                        type="text" 
-                        name="scan" 
-                        id="scan" 
-                        placeholder="Scan Your ID Here" 
-                        class="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                    <button 
-                        type="submit" 
-                        class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-r-lg transition duration-300"
-                    >
-                        Scan
-                    </button>
-                </form>
-            </div>
+<!-- RFID Scanner -->
+<div class="bg-white shadow-lg rounded-lg p-4 h-full flex items-center">
+    <form action="index.php" method="post" class="flex w-full" id="rfidForm">
+        <input 
+            type="text" 
+            name="scan" 
+            id="scan" 
+            placeholder="Scan Your ID Here" 
+            class="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            oninput="autoSubmit()" 
+            autofocus 
+        >
+        <button 
+            type="submit" 
+            class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-r-lg transition duration-300"
+        >
+            Scan
+        </button>
+    </form>
+</div>
 
-            <!-- Today's Attendance - Full Width -->
-            <div class="bg-white shadow-lg rounded-lg p-4 md:col-span-3">
-                <h3 class="text-xl font-semibold mb-4 text-gray-800">Today's Attendance</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead>
-                            <tr class="bg-gray-100">
-                                <th class="py-2 px-4 text-left">Time In</th>
-                                <th class="py-2 px-4 text-left">Time Out</th>
-                                <th class="py-2 px-4 text-left">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php 
-                            if (!empty($rfid) && isset($result2) && mysqli_num_rows($result2) > 0) {
-                                foreach ($result2 as $rowDate) { ?> 
-                                    <tr>
-                                        <td class="py-2 px-4"><?= htmlspecialchars($rowDate['dates']) ?></td>
-                                        <td class="py-2 px-4">
-                                            <?= $rowDate['datess'] == NULL ? '<span class="text-gray-400">---</span>' : htmlspecialchars($rowDate['datess']) ?>
-                                        </td>
-                                        <td class="py-2 px-4"><?= date("d/m/Y") ?></td>
-                                    </tr>
-                                <?php }
-                            } else { ?> 
-                                <tr>
-                                    <td colspan="3" class="py-4 text-center text-gray-500">No attendance records</td>
-                                </tr>
-                            <?php } ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+<script>
+    // Automatically submit the form when a value is entered in the RFID scan field
+    function autoSubmit() {
+        const scanInput = document.getElementById('scan');
+        if (scanInput.value.trim() !== "") {
+            document.getElementById('rfidForm').submit();
+        }
+    }
+
+    // Focus the RFID input field when the page loads
+    window.onload = function() {
+        document.getElementById('scan').focus();
+    };
+</script>
+
+
+<!-- Today's Attendance - Full Width -->
+<div class="bg-white shadow-lg rounded-lg p-4 md:col-span-3">
+    <h3 class="text-xl font-semibold mb-4 text-gray-800">Today's Attendance</h3>
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="py-2 px-4 text-left">Time In</th>
+                    <th class="py-2 px-4 text-left">Time Out</th>
+                    <th class="py-2 px-4 text-left">Date</th>
+                    <th class="py-2 px-4 text-left">Status</th> <!-- Add Status Column -->
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+                if (!empty($rfid) && isset($result2) && mysqli_num_rows($result2) > 0) {
+                    foreach ($result2 as $rowDate) { ?> 
+                        <tr>
+                            <td class="py-2 px-4"><?= htmlspecialchars($rowDate['dates']) ?></td>
+                            <td class="py-2 px-4">
+                                <?= $rowDate['datess'] == NULL ? '<span class="text-gray-400">---</span>' : htmlspecialchars($rowDate['datess']) ?>
+                            </td>
+                            <td class="py-2 px-4"><?= date("d/m/Y") ?></td>
+                            <td class="py-2 px-4"><?= htmlspecialchars($rowDate['attendance_status']) ?></td> <!-- Display Status -->
+                        </tr>
+                    <?php }
+                } else { ?> 
+                    <tr>
+                        <td colspan="4" class="py-4 text-center text-gray-500">No attendance records</td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
             <!-- Recent Logs - Full Width -->
             <div class="bg-white shadow-lg rounded-lg p-4 md:col-span-3">

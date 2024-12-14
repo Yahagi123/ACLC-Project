@@ -33,41 +33,43 @@ if(isset($_POST["SignIn"])){
     <link rel="stylesheet" href="css/SignIn.css">
 </head>
 <body>
-        
-    <!-- SIGN IN FORM-->
-     <!--Header-->
+<body>
     <div class="container">
-          <div class="signin_form">
-          <div class="circle_icon">
-                <span></span>
-            </div>
+        <div class="signin_form">
             <h2>Sign In</h2>
-        <form action="" method="POST">
-            <div class="label_container">
-                <label for="Username">Username</label>
-                <input type="text" name="username" id="username" placeholder="Username">
-                <?php echo $userError ?>
-            </div>
-            <div class="label_container">
-                <label for="Password">Password</label>
-                <input type="password" name="password" id="password" placeholder="Password">
-                <?php echo $passwordError ?>
-            </div>
-            <div class="check_option">
-                <div class="check">
-                    <input type="checkbox" name="check" id="check">
-                    <label for="checkbox">Remember Password</label>
+            <form action="" method="POST">
+                <div class="label_container">
+                    <label for="Username">Username</label>
+                    <input type="text" name="username" id="username" placeholder="Enter your username" required>
+                    <?php 
+                    if (!empty($userError)) {
+                        echo "<div class='error-message'>$userError</div>"; 
+                    }
+                    ?>
                 </div>
-                <div class="check">
-                    <p><a href="#">Forgot Password ?</a></p>
+                <div class="label_container">
+                    <label for="Password">Password</label>
+                    <input type="password" name="password" id="password" placeholder="Enter your password" required>
+                    <?php 
+                    if (!empty($passwordError)) {
+                        echo "<div class='error-message'>$passwordError</div>"; 
+                    }
+                    ?>
                 </div>
-            </div>
-            <div class="submit">
-                <input type="submit" value="SignIn" name="SignIn">
-            </div>
-            
-        </form>
-          </div>
+                <div class="check_option">
+                    <div class="check">
+                        <input type="checkbox" name="check" id="check">
+                        <label for="check">Remember Password</label>
+                    </div>
+                    <div class="check">
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                </div>
+                <div class="submit">
+                    <input type="submit" value="Sign In" name="SignIn">
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html>

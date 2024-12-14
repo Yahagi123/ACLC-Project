@@ -11,8 +11,8 @@
     --primary-color: #ffff;
     --secondary-color: #d4d4d4;
     --text-color: #333;
-    --accent-color: #FF6F61;
-    --hover-color: #015880;
+    --accent-color: #6b88ff;
+    --hover-color: #2cb1ef;
     --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --border-radius: 10px;
 }
@@ -173,24 +173,12 @@ body {
 
 .content {
     align-content: flex-start;
-    margin-left: 70px;
+    margin-left: 100px;
     display: flex;
     flex-direction: row;
     margin-top: 70px; /* Add margin to match the navbar height */
     padding: 20px;
     transition: margin 0.3s ease-in-out;
-}
-.burger img {
-    transition: transform 0.3s ease;
-}
-
-.sidebar.open + .navbar .burger img {
-    transform: rotate(90deg);
-}
-
-/* Sidebar and Content Margin Adjustment */
-.sidebar.open ~ .content {
-    margin-left: 277px;
 }
 
 /* Dropdown Styles */
@@ -218,137 +206,195 @@ body {
 .student_drop a:hover {
     color: var(--accent-color);
 }
-<<<<<<< Updated upstream
-<<<<<<<< Updated upstream:Aclc Project/attendance.css
-
-.content-selecting{
-    margin-left: 20px;
-========
-=======
->>>>>>> Stashed changes
 .sidebar.open ~ .content {
     margin-left: 277px;
 }
-.content-selecting{
-    margin-left: 20px;
-    display: flex;
-<<<<<<< Updated upstream
->>>>>>>> Stashed changes:Aclc Project/css/Teacher_attendance.css
-=======
-}
-.content-selecting{
-    margin-left: 20px;
->>>>>>> Stashed changes
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
+.senior-table{
+    padding: 20px;
     background: white;
     width: 100%;
-<<<<<<< Updated upstream
-<<<<<<<< Updated upstream:Aclc Project/attendance.css
-=======
-    padding: 20px;
-    transition: transform 0.3s ease;
 }
-.attendance-section {
+.senior-table table {
     width: 100%;
-    background-color: white;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    overflow: hidden; /* Ensures rounded corners */
 }
 
-.table-controls {
+.senior-table thead {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+}
+
+.senior-table th, .senior-table td {
+    padding: 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.senior-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.senior-table tbody tr:hover {
+    background-color: var(--hover-color);
+    color: var(--primary-color);
+    cursor: pointer; /* Optional for hover feedback */
+}
+
+.senior-table tbody td {
+    color: var(--text-color);
+}
+
+/* Style for the select dropdown */
+.senior-table select {
+    font-size: 18px;
+    color: var(--text-color);
+    background-color: var(--primary-color);
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    margin-bottom: 15px;
+}
+.header-section {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.header-section h2 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.header-section select {
+    font-size: 16px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+}
+
+.search-section {
     margin-bottom: 15px;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+.search-bar {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
 }
 
-table thead {
-    background-color: var(--secondary-color);
-    color: white;
-}
-
-table th, table td {
+.search-bar input {
+    padding: 8px;
+    font-size: 16px;
     border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
+    border-radius: var(--border-radius);
+    width: 200px;
 }
 
-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.current-time {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    background-color: var(--primary-color);
+.search-bar button {
+    padding: 8px 15px;
+    background-color: var(--hover-color);
     color: white;
-    padding: 10px;
-    border-radius: 5px
-}
-.navigation ul {
-    list-style: none;
-    margin: 10px;
-    padding: 10px;
-    display: flex;
-    gap: 20px;
-}
-
-.navigation  ul li img a {
-    text-decoration: none;
-    color: black;
-    font-weight: bold;
-    transition: color 0.3s ease;
-}
-.navigation a{
-    font-size: 20px;
-    margin-top: 20px;
-    text-decoration: underline;
-    list-style: none;
-    color: black;
-}
-.navigation ul li a:hover {
-    color: var(--accent-color);
-}
-{
->>>>>>> Stashed changes
-    height: 80vh;
-    padding: 20px;
-    transition: transform 0.3s ease;
-}
-
-.navigation{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    color: white;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    box-shadow: var(--box-shadow);
-<<<<<<< Updated upstream
-========
-    padding: 20px;
-    transition: transform 0.3s ease;
-}
-.content-selecting h2 {
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
     font-size: 16px;
 }
-.content-selecting p {
-    margin-left: 93s0px;
-    align-items: center;
-    text-align: center;
-    font-size: 12px;
->>>>>>>> Stashed changes:Aclc Project/css/Teacher_attendance.css
-=======
->>>>>>> Stashed changes
+
+.search-bar button:hover {
+    background-color: var(--accent-color);
+}
+
+.action-buttons {
+    justify-content: flex-start; /* Align buttons to the left */
+    gap: 10px; /* Add space between buttons */
+    margin: 20px 0; /* Add space above and below */
+}
+
+.action-buttons button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: var(--hover-color);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
+    transition: background-color 0.3s ease;
+}
+
+.action-buttons button:hover {
+    background-color: var(--accent-color);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+.table-section td a{
+    color: black;
+}
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: black;
+}
+
+.student-profile {
+    margin-bottom: 20px;
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.calendar div {
+    padding: 15px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.calendar .present {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.calendar .absent {
+    background-color: #f44336;
+    color: white;
 }

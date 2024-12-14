@@ -218,107 +218,23 @@ body {
 .student_drop a:hover {
     color: var(--accent-color);
 }
-<<<<<<< Updated upstream
 <<<<<<<< Updated upstream:Aclc Project/attendance.css
 
 .content-selecting{
     margin-left: 20px;
 ========
-=======
->>>>>>> Stashed changes
 .sidebar.open ~ .content {
     margin-left: 277px;
 }
 .content-selecting{
     margin-left: 20px;
     display: flex;
-<<<<<<< Updated upstream
 >>>>>>>> Stashed changes:Aclc Project/css/Teacher_attendance.css
-=======
-}
-.content-selecting{
-    margin-left: 20px;
->>>>>>> Stashed changes
     box-shadow: var(--box-shadow);
     border-radius: var(--border-radius);
     background: white;
     width: 100%;
-<<<<<<< Updated upstream
 <<<<<<<< Updated upstream:Aclc Project/attendance.css
-=======
-    padding: 20px;
-    transition: transform 0.3s ease;
-}
-.attendance-section {
-    width: 100%;
-    background-color: white;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-.table-controls {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-table thead {
-    background-color: var(--secondary-color);
-    color: white;
-}
-
-table th, table td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
-}
-
-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.current-time {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    background-color: var(--primary-color);
-    color: white;
-    padding: 10px;
-    border-radius: 5px
-}
-.navigation ul {
-    list-style: none;
-    margin: 10px;
-    padding: 10px;
-    display: flex;
-    gap: 20px;
-}
-
-.navigation  ul li img a {
-    text-decoration: none;
-    color: black;
-    font-weight: bold;
-    transition: color 0.3s ease;
-}
-.navigation a{
-    font-size: 20px;
-    margin-top: 20px;
-    text-decoration: underline;
-    list-style: none;
-    color: black;
-}
-.navigation ul li a:hover {
-    color: var(--accent-color);
-}
-{
->>>>>>> Stashed changes
     height: 80vh;
     padding: 20px;
     transition: transform 0.3s ease;
@@ -335,7 +251,6 @@ table tbody tr:nth-child(even) {
     width: 100%;
     z-index: 1000;
     box-shadow: var(--box-shadow);
-<<<<<<< Updated upstream
 ========
     padding: 20px;
     transition: transform 0.3s ease;
@@ -349,6 +264,4 @@ table tbody tr:nth-child(even) {
     text-align: center;
     font-size: 12px;
 >>>>>>>> Stashed changes:Aclc Project/css/Teacher_attendance.css
-=======
->>>>>>> Stashed changes
 }

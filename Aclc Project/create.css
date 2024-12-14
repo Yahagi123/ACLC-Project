@@ -1,0 +1,127 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f4f6f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+.profile-container {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  padding: 30px;
+}
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #e0e4e8;
+  padding-bottom: 15px;
+}
+.profile-header img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+.profile-header h1 {
+  color: #2c3e50;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.label_container {
+  display: flex;
+  flex-direction: column;
+}
+label {
+  margin-bottom: 5px;
+  color: #495057;
+  font-weight: 600;
+}
+input, select {
+  padding: 10px;
+  border: 1.5px solid #ced4da;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+}
+input:focus, select:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+.file-upload {
+  display: flex;
+  align-items: center;
+  border: 2px dashed #e0e4e8;
+  padding: 15px;
+  border-radius: 8px;
+}
+.file-upload input[type="file"] {
+  width: 100%;
+}
+.submit {
+  grid-column: span 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+.submit input {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.submit input:hover {
+  background-color: #357abd;
+}
+.submit span {
+  color: #e74c3c;
+  font-weight: 500;
+}
+.label_container button {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.label_container a{
+  color: #e74c3c;
+}
+
+.label_container button:hover {
+  background-color: #d50d0d;
+}
+@media (max-width: 600px) {
+  .form-grid {
+      grid-template-columns: 1fr;
+  }
+  .submit {
+      grid-column: span 1;
+      flex-direction: column;
+      align-items: stretch;
+  }
+  .label_container button{
+    display: flex;
+    margin-left: 700px;
+  }
+}

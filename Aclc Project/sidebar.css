@@ -8,11 +8,11 @@
 }
 
 :root {
-    --primary-color: #da8b25;
-    --secondary-color: #f4f4f4;
+    --primary-color: #ffff;
+    --secondary-color: #d4d4d4;
     --text-color: #333;
     --accent-color: #FF6F61;
-    --hover-color: #e2a864;
+    --hover-color: #1684b7;
     --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --border-radius: 10px;
 }
@@ -31,7 +31,7 @@ body {
     align-items: center;
     background-color: var(--primary-color);
     padding: 10px 20px;
-    color: white;
+    color: black;
     position: fixed;
     top: 0;
     left: 0;
@@ -70,9 +70,9 @@ body {
     gap: 20px;
 }
 
-.navbar .nav-links ul li a {
+.navbar .nav-links ul li img {
     text-decoration: none;
-    color: white;
+    color: black;
     font-weight: bold;
     transition: color 0.3s ease;
 }
@@ -80,12 +80,20 @@ body {
 .navbar .nav-links ul li a:hover {
     color: var(--accent-color);
 }
+<<<<<<< Updated upstream
 /* Sidebar */
+=======
+<<<<<<< HEAD
+
+=======
+/* Sidebar */
+>>>>>>> dd02decfc3014493abd6506852e4df3c0ee7c55b
+>>>>>>> Stashed changes
 .sidebar {
     width: 70px; /* Reduced width */
     height: 100vh;
     background-color: var(--primary-color);
-    color: white;
+    color: black;
     position: fixed;
     top: 0;
     left: 0;
@@ -123,7 +131,7 @@ body {
 
 .sidebar ul li a {
     text-decoration: none;
-    color: white;
+    color: black;
     font-size: 18px;
     display: flex;
     align-items: center;
@@ -235,14 +243,14 @@ body {
     box-shadow: var(--box-shadow);
     border-radius: var(--border-radius);
     background: white;
-    width: 500px;
+    width: 600px;
     padding: 20px;
     transition: transform 0.3s ease;
 }
 
 .graph_container:hover {
     transform: translateY(-5px);
-}
+}   
 
 /* Burger Animation */
 .burger img {
@@ -262,7 +270,7 @@ body {
     box-shadow: var(--box-shadow);
     border-radius: var(--border-radius);
     background: white;
-    width: 500px;
+    width: 600px;
     padding: 20px;
     transition: transform 0.3s ease;
 }

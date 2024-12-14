@@ -31,16 +31,29 @@ body {
   }
   
   /* Circle Border around the form */
-  .circle_icon{
+  .circle_icon {
     position: absolute;
     top: -50px; /* Move the circle halfway above the form */
     left: 50%;
     transform: translateX(-50%);
     width: 100px;
     height: 100px;
-    background-color: #3498db;
+    background-color: #d4d4d4;
     border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Ensure the image stays within the circle */
   }
+  
+  .circle_icon img {
+    width: 100%; /* Make the image fill the circle */
+    height: 100%;
+    object-fit: cover; /* Ensures the image is scaled properly */
+    border-radius: 50%; /* Ensures the image is circular */
+  }
+  
 /* Input Form */
 .label_container{
   text-align: left;
@@ -87,4 +100,152 @@ body {
   border-radius: 20px;
   cursor: pointer;
   font-size: 16px;
+}       :root {
+  --primary-blue: #2C3E50;
+  --secondary-blue: #3498DB;
+  --light-blue: #ECF0F1;
+  --white: #FFFFFF;
+  --error-red: #E74C3C;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--light-blue);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  perspective: 1000px;
+}
+
+.container {
+  width: 100%;
+  max-width: 450px;
+  padding: 20px;
+}
+
+.signin_form {
+  background-color: var(--white);
+  border-radius: 15px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  animation: cardEntry 0.7s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+  transform-origin: center;
+}
+
+.circle_icon {
+  width: 100px;
+  height: 100px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: var(--primary-blue);
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.label_container {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--primary-blue);
+  font-weight: 600;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid var(--secondary-blue);
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.error-message {
+  color: var(--error-red);
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: left;
+}
+
+.check_option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  color: var(--primary-blue);
+}
+
+.check a {
+  color: var(--secondary-blue);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.check a:hover {
+  color: var(--primary-blue);
+}
+
+.submit input[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--secondary-blue);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.submit input[type="submit"]:hover {
+  background-color: var(--primary-blue);
+  transform: translateY(-3px);
+}
+
+@keyframes cardEntry {
+  from {
+      opacity: 0;
+      transform: scale(0.9) rotateX(-45deg);
+  }
+  to {
+      opacity: 1;
+      transform: scale(1) rotateX(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .signin_form {
+      padding: 20px;
+      margin: 0 15px;
+  }
 }

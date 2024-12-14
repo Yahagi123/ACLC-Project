@@ -14,6 +14,7 @@ if (isset($_POST["submit"])) {
     $password2 = $_POST['password_con'];
     $role = $_POST['role'];
 
+    
     // Basic validations
     if (empty($username)) {
         $NameError = "Username is required.";
@@ -61,7 +62,6 @@ if (isset($_POST["submit"])) {
      <div class="container">
           <div class="signin_form">
           <div class="circle_icon">
-                <span></span>
             </div>
             <h2>Sign Up</h2>
         <form action="SignUp.php" method="POST">
