@@ -49,8 +49,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 $attendanceStatus = 'Absent';
             }
 
-            $sqlInsertLog = "INSERT INTO rfid_logs (student_name, USN, course, year, time_in, time_out, date_logged, image, attendance_status) 
-                             VALUES ('$studentName', '$rfid', '$course', '$year', '$timeIn', '$timeOut', '$dateLogged', '$image', '$attendanceStatus')";
+            $sqlInsertLog = "INSERT INTO rfid_logs (student_name, USN, course, year, time_in, time_out, date_logged, image) 
+                             VALUES ('$studentName', '$rfid', '$course', '$year', '$timeIn', '$timeOut', '$dateLogged', '$image')";
             mysqli_query($conn, $sqlInsertLog);
         }   
     }
@@ -165,12 +165,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             oninput="autoSubmit()" 
             autofocus 
         >
-        <button 
-            type="submit" 
-            class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-r-lg transition duration-300"
-        >
-            Scan
-        </button>
     </form>
 </div>
 
@@ -200,7 +194,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     <th class="py-2 px-4 text-left">Time In</th>
                     <th class="py-2 px-4 text-left">Time Out</th>
                     <th class="py-2 px-4 text-left">Date</th>
-                    <th class="py-2 px-4 text-left">Status</th> <!-- Add Status Column -->
                 </tr>
             </thead>
             <tbody>
@@ -213,7 +206,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                 <?= $rowDate['datess'] == NULL ? '<span class="text-gray-400">---</span>' : htmlspecialchars($rowDate['datess']) ?>
                             </td>
                             <td class="py-2 px-4"><?= date("d/m/Y") ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($rowDate['attendance_status']) ?></td> <!-- Display Status -->
                         </tr>
                     <?php }
                 } else { ?> 
@@ -227,58 +219,67 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 </div>
 
 
-            <!-- Recent Logs - Full Width -->
-            <div class="bg-white shadow-lg rounded-lg p-4 md:col-span-3">
-                <h3 class="text-xl font-semibold mb-4 text-gray-800">Recent Activity</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead>
-                            <tr class="bg-gray-100">
-                                <th class="py-2 px-4">Image</th>
-                                <th class="py-2 px-4">Name</th>
-                                <th class="py-2 px-4">Student ID</th>
-                                <th class="py-2 px-4">Course</th>
-                                <th class="py-2 px-4">Year</th>
-                                <th class="py-2 px-4">Time In</th>
-                                <th class="py-2 px-4">Time Out</th>
-                                <th class="py-2 px-4">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $sqlHistory = "SELECT * FROM rfid_logs ORDER BY date_logged DESC LIMIT 4";
-                            $historyResult = mysqli_query($conn, $sqlHistory);
-                            if (mysqli_num_rows($historyResult) > 0) {
-                                while ($historyRow = mysqli_fetch_assoc($historyResult)) {
-                                    $timeIn = date('H:i:s', strtotime($historyRow['time_in']));
-                                    $timeOut = $historyRow['time_out'] == NULL ? '---' : date('H:i:s', strtotime($historyRow['time_out']));
-                                    $dateLogged = date('Y-m-d', strtotime($historyRow['date_logged'])); ?>
-                                    <tr class="border-b">
-                                        <td class="py-2 px-4">
-                                            <img src="<?= htmlspecialchars($historyRow['image']) ?>" 
-                                                 alt="Student Image" 
-                                                 class="w-12 h-12 rounded-full object-cover">
-                                        </td>
-                                        <td class="py-2 px-4"><?= htmlspecialchars($historyRow['student_name']) ?></td>
-                                        <td class="py-2 px-4"><?= htmlspecialchars($historyRow['USN']) ?></td>
-                                        <td class="py-2 px-4"><?= htmlspecialchars($historyRow['course']) ?></td>
-                                        <td class="py-2 px-4"><?= htmlspecialchars($historyRow['year']) ?></td>
-                                        <td class="py-2 px-4"><?= $timeIn ?></td>
-                                        <td class="py-2 px-4"><?= $timeOut ?></td>
-                                        <td class="py-2 px-4"><?= $dateLogged ?></td>
-                                    </tr>
-                                <?php }
-                            } else { ?>
-                                <tr>
-                                    <td colspan="8" class="py-4 text-center text-gray-500">No recent logs found</td>
-                                </tr>
-                            <?php } ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+<!-- Recent Logs - Full Width -->
+<div class="bg-white shadow-lg rounded-lg p-4 md:col-span-3">
+    <h3 class="text-xl font-semibold mb-4 text-gray-800">Recent Activity</h3>
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="py-2 px-4">Image</th>
+                    <th class="py-2 px-4">Name</th>
+                    <th class="py-2 px-4">Student ID</th>
+                    <th class="py-2 px-4">Course</th>
+                    <th class="py-2 px-4">Year</th>
+                    <th class="py-2 px-4">Time In</th>
+                    <th class="py-2 px-4">Time Out</th>
+                    <th class="py-2 px-4">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $sqlHistory = "SELECT student_name, USN, course, year, 
+                                      DATE_FORMAT(CONVERT_TZ(time_in, '+00:00', '+08:00'), '%h:%i %p') AS formatted_time_in, 
+                                      DATE_FORMAT(CONVERT_TZ(time_out, '+00:00', '+08:00'), '%h:%i %p') AS formatted_time_out, 
+                                      DATE_FORMAT(CONVERT_TZ(date_logged, '+00:00', '+08:00'), '%d/%m/%Y') AS formatted_date_logged, 
+                                      image 
+                               FROM rfid_logs 
+                               ORDER BY time_in DESC 
+                               LIMIT 4";
+                $historyResult = mysqli_query($conn, $sqlHistory);
+
+                if (mysqli_num_rows($historyResult) > 0) {
+                    while ($historyRow = mysqli_fetch_assoc($historyResult)) {
+                        $timeIn = $historyRow['formatted_time_in'] ?: '<span class="text-gray-400">---</span>';
+                        $timeOut = $historyRow['formatted_time_out'] ?: '<span class="text-gray-400">---</span>';
+                        $dateLogged = $historyRow['formatted_date_logged'];
+                        ?>
+                        <tr class="border-b">
+                            <td class="py-2 px-4">
+                                <img src="<?= htmlspecialchars($historyRow['image']) ?>" 
+                                     alt="Student Image" 
+                                     class="w-12 h-12 rounded-full object-cover">
+                            </td>
+                            <td class="py-2 px-4"><?= htmlspecialchars($historyRow['student_name']) ?></td>
+                            <td class="py-2 px-4"><?= htmlspecialchars($historyRow['USN']) ?></td>
+                            <td class="py-2 px-4"><?= htmlspecialchars($historyRow['course']) ?></td>
+                            <td class="py-2 px-4"><?= htmlspecialchars($historyRow['year']) ?></td>
+                            <td class="py-2 px-4"><?= $timeIn ?></td>
+                            <td class="py-2 px-4"><?= $timeOut ?></td>
+                            <td class="py-2 px-4"><?= $dateLogged ?></td>
+                        </tr>
+                    <?php }
+                } else { ?>
+                    <tr>
+                        <td colspan="8" class="py-4 text-center text-gray-500">No recent logs found</td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
     </div>
+</div>
+
+
 
     <script>
         // Digital Clock Script

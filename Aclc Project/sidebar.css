@@ -8,7 +8,7 @@
 }
 
 :root {
-    --primary-color: #ffff;
+    --primary-color: #020000;
     --secondary-color: #d4d4d4;
     --text-color: #333;
     --accent-color: #FF6F61;
@@ -241,7 +241,10 @@ body {
 
 .graph_container:hover {
     transform: translateY(-5px);
-}   
+}
+.graph_container .Per_day{
+    margin: 10px;
+}
 
 /* Burger Animation */
 .burger img {
@@ -310,4 +313,19 @@ body {
     height: 300px;
     padding: 20px;
     transition: transform 0.3s ease;
+}
+.most_review {
+    width: 100%; 
+    max-width: 100%; 
+    padding: 10px; 
+    box-sizing: border-box;  
+    overflow: hidden; 
+    margin-top: 20px; 
+    background-color: #f0f0f0; 
+}
+
+.most_review canvas {
+    width: 100% !important; /* Ensures the canvas fits its container */
+    height: auto; /* Maintains aspect ratio of the canvas */
+    max-width: 100%; /* Ensures it doesn't stretch beyond the container */
 }

@@ -12,6 +12,7 @@ if (isset($_POST["Create"])) {
     $Email = mysqli_real_escape_string($conn, $_POST['Email']);
     $Address = mysqli_real_escape_string($conn, $_POST['Address']);
     $Course = mysqli_real_escape_string($conn, $_POST['course']);
+    $section = mysqli_real_escape_string($conn, $_POST['section']);
     $Birth = mysqli_real_escape_string($conn, $_POST['Date']);
     $Year = mysqli_real_escape_string($conn, $_POST['year']);
     
@@ -49,8 +50,8 @@ if (isset($_POST["Create"])) {
         $emptyError = "There is a blank in the form.";
     } else {
         if (empty($emptyError)) {
-            $sql = "INSERT INTO `student_create`(`Image`, `student name`, `USN`,`RFID`, `Email Address`, `Address`, `Course`, `Year`, `birthdate`) 
-                    VALUES ('$image', '$Student','$Rfid' ,'$USN', '$Email', '$Address', '$Course', '$Year', '$Birth')";
+            $sql = "INSERT INTO `student_create`(`Image`, `student name`, `USN`,`RFID`, `Email Address`, `Address`, `Course`,Section, `Year`, `birthdate`) 
+                    VALUES ('$image', '$Student','$Rfid' ,'$USN', '$Email', '$Address', '$Course','$section', '$Year', '$Birth')";
             
             if ($conn->query($sql)) {
                 $Create = "Successfully created new UID";
@@ -122,8 +123,8 @@ if (isset($_POST["Create"])) {
                     </select>
                 </div>
                 <div class="label_container">
-                    <label for="course">Class Section</label>
-                    <select name="course" id="course">
+                    <label for="section">Class Section</label>
+                    <select name="section" id="section">
                         <option value="">Select Section</option>
                         <option value="A1">11A</option>
                         <option value="A2">12A</option>
