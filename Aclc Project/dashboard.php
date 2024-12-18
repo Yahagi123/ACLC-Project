@@ -1,3 +1,21 @@
+<?php
+require "./connect.php";
+$query = "SELECT COUNT(*) AS college_count FROM student_create WHERE Year = 'College' ";
+
+$result = mysqli_query($conn, $query);
+$row = mysqli_fetch_assoc($result);
+
+// Get the number of college students
+$college_count = $row['college_count']; 
+$query = "SELECT COUNT(*) AS senior_count FROM student_create WHERE Year = 'Senior' ";
+
+$result = mysqli_query($conn, $query);
+$row = mysqli_fetch_assoc($result);
+
+// Get the number of Senior High students
+$senior_count = $row['senior_count'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,8 +24,12 @@
     <title>RFID Attendance Monitoring Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="css/sidebar.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+
 </head>
 <body>
     <div class="navbar">
@@ -63,12 +85,12 @@
                 <h2>4</h2>
             </div>
             <div class="boxs">
-                <h3>Today Present</h3>
-                <h2>---</h2>
+            <h3>Enrolled College</h3>
+            <h2><?php echo $college_count; ?></h2>
             </div>
             <div class="boxs">
-                <h3>Today Absent</h3>
-                <h2>---</h2>
+            <h3>Enrolled Senior</h3>
+            <h2><?php echo $senior_count; ?></h2>
             </div>
             <div class="boxs">
                 <h3>Total Student</h3>
@@ -86,10 +108,29 @@
         <div class="table_container"></div>
     </div>
     <div class="content-calendar">
-        <div class="calendar-container"></div>
+        <div class="calendar-container">
+            <script src="calendar.js"></script>
+        </div>
     </div>
 
     <script>
+        //Hamburger Bar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');   
+        }
+        // Function to filter records based on input and date
+function filterRecords() {
+    // Select the record container (you might need to adjust this selector)
+    const recordContainer = document.querySelector('.container-record');
+
+    if(recordContainer.style.display == 'flex'){
+        recordContainer.style.display = 'none'
+    }
+    else{
+        recordContainer.style.display = 'flex'
+    }
+}
         // Pie chart configuration
         const ctxPie = document.getElementById('pieChart').getContext('2d');
         const pieChart = new Chart(ctxPie, {
@@ -125,27 +166,43 @@
         // Diagonal line chart configuration
         // Diagonal bar chart configuration
 // Horizontal bar chart configuration
+<?php
+require "./connect.php";
+// Assuming you're already connected to the database
+$query = "SELECT Course, COUNT(*) AS student_count FROM student_create GROUP BY Course ORDER BY student_count DESC LIMIT 4";
+$result = mysqli_query($conn, $query);
+
+$courses = [];
+$counts = [];
+
+while ($row = mysqli_fetch_assoc($result)) {
+    $courses[] = $row['Course'];
+    $counts[] = $row['student_count'];
+}
+?>
+
+// Getting the data from PHP
+const courses = <?php echo json_encode($courses); ?>;
+const counts = <?php echo json_encode($counts); ?>;
+
+// Diagonal bar chart configuration
 const ctxDiagonal = document.getElementById('diagonalChart').getContext('2d');
 const diagonalChart = new Chart(ctxDiagonal, {
     type: 'bar',
     data: {
-        labels: ['January', 'February', 'March', 'April', 'May'],
+        labels: courses, // Use dynamic course names
         datasets: [{
-            label: 'Monthly Attendance',
-            data: [10, 20, 30, 40, 50], // Replace with dynamic data if needed
+            label: 'Most Enrolled Course',
+            data: counts, // Use dynamic student counts
             backgroundColor: [
                 'rgba(54, 162, 235, 0.6)',
                 'rgba(75, 192, 192, 0.6)',
                 'rgba(255, 205, 86, 0.6)',
-                'rgba(255, 99, 132, 0.6)',
-                'rgba(153, 102, 255, 0.6)'
             ],
             borderColor: [
                 'rgba(54, 162, 235, 1)',
                 'rgba(75, 192, 192, 1)',
                 'rgba(255, 205, 86, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(153, 102, 255, 1)'
             ],
             borderWidth: 1
         }]
@@ -162,18 +219,19 @@ const diagonalChart = new Chart(ctxDiagonal, {
             x: {
                 title: {
                     display: true,
-                    text: 'Attendance Count'
+                    text: 'Number of Students'
                 }
             },
             y: {
                 title: {
                     display: true,
-                    text: 'Months'
+                    text: 'Courses'
                 }
             }
         }
     }
 });
+
 
 
     </script>

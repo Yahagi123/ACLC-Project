@@ -3,135 +3,508 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student List</title>
-    <link rel="stylesheet" href="css/rfid.css">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>RFID Attendance Monitoring Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="rfid.css">
+     <!-- Previous head content remains the same -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.15/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
 </head>
 <body>
+    <div class="navbar">
+        <div class="left-section">
+        <img src="./uploads/logo.png" alt="" width="40px" style="margin-right: 10px;">
+            <h2>ACLC Administrator</h2>
+            <div class="burger" onclick="toggleSidebar()">
+                <img width="25" height="25" src="https://img.icons8.com/ios-filled/50/menu--v1.png" alt="menu" />
+            </div>
+        </div>
+        <div class="nav-links">
+            <ul>
+                <li><a href="#"><img width="30" height="30" src="https://img.icons8.com/ios/50/refresh.png" alt="refresh"/></a></li>
+                <li><a href="#"><img width="30" height="30" src="https://img.icons8.com/ios/50/appointment-reminders.png" alt="appointment-reminders"/></a></li>
+                <li><a href="#"><img width="30" height="30" src="https://img.icons8.com/windows/32/chat.png" alt="chat"/></a></li>
+                <li><a href="#"><img width="30" height="30" src="https://img.icons8.com/windows/32/gender-neutral-user.png" alt="gender-neutral-user"/></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="sidebar" id="sidebar">
+        <header>CS31</header>
+        <ul>
+            <li><a href="dashboard.php"><img width="24" height="24" src="https://img.icons8.com/fluency-systems-regular/50/home--v1.png" alt="home--v1"/><span>Dashboard</span></a></li>
+            <li class="dropdown">
+                <a href=""><img width="25" height="25" src="https://img.icons8.com/ios/50/attendance-mark.png" alt="attendance-mark" /><span>Attendance</span></a>
+                <ul class="student_drop">
+                    <li><a href="attendance.php"><img width="24" height="24" src="https://img.icons8.com/material-outlined/24/raise-a-hand-to-answer.png" alt="raise-a-hand-to-answer" /><span>Student Attendance</span></a></li>
+                    <li><a href="Teacher_attendance.php"><img width="24" height="24" src="https://img.icons8.com/fluency-systems-regular/50/training.png" alt="training" /><span>Teacher Attendance</span></a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="student.php"><img width="24" height="24" src="https://img.icons8.com/parakeet-line/48/student-male.png" alt="student-male" /><span>Student</span></a>
+            </li>
+            <li class="dropdown">
+                <a href="#"><img width="24" height="24" src="https://img.icons8.com/material-outlined/24/business-report.png" alt="business-report"/><span>Records</span></a>
+                <ul class="student_drop">
+                    <li><a href="Senior_record.php">Senior High</a></li>
+                    <li><a href="college_record.php">College</a></li>
+                    <li><a href="teacher_record.php">Teacher</a></li>
+                    <li><a href="Guess_record.php">School</a></li>
+                </ul>
+            </li>
+            <li><a href="Report.php"><img width="24" height="24" src="https://img.icons8.com/ios/50/bar-chart--v1.png" alt="bar-chart--v1"/><span>Reports</span></a></li>
+            <li><a href="teacher.php"><img width="24" height="24" src="https://img.icons8.com/windows/32/training.png" alt="training"/><span>Teacher</span></a></li>
+            <li style="background:red;"><a href="logout.php">Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+    <div class="record-navbar">
+    <ul>
+        <li><a href="#" class="nav-option active" data-section="daily-present">Daily Present</a></li>
+        <li><a href="attendance.php" class="nav-option" data-section="attendance-logs">Rfid Logs</a></li>
+    </ul>
+</div>
+        <div class="daily-record">
+            <div class="title-header-container" >
+            <h1>Daily present Report</h1>
+            <button class="button">filter</button>
+            </div>
+            <div class="container-record" >
+                    <input class="all" type="text" placeholder="All" >
+                    <div class="custom-date-wrapper">
+    <input 
+        type="date" 
+        id="attendanceDate" 
+        name="attendanceDate" 
+        class="custom-date-input" 
+        min="2024-01-01" 
+        max="2025-12-31"
+    >   
+</div>  
+                    <div>
+                    <button class="btn-record find" type="button">Find</button>
+                    <button class="btn-record reset" type="button">Reset</button>
+                </div>
+            </div>
+            <hr>
+            <div style="display: none;" class="actions" >
+                <div>
+                    <h6>Show <input type="text"> entries</h6>
+                </div>
+                <div>
+                    <button>CSV</button>
+                    <button>Excel</button>
+                    <button class="print" >Print</button>
+                </div>
+                <div>
+                    <h6>Search: </h6>
+                    <input type="text">
+                </div>
+            </div>
+            <div class="actions">
+            <div style="width: 100%;"  class="table-controls-container">
+    <div class="entries-selector">
+        <label for="entries-dropdown" class="entries-label">Show</label>
+        <select id="entries-dropdown" class="entries-dropdown">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+        <span class="entries-text">entries</span>
+    </div>
+
     
-<div class="custom-navbar">
-    <button><a href="attendance.php">Back</a></button>
-    <div class="nav-links">
-        <form method="get" class="d-flex align-items-center">
-            <label for="Search" class="me-2">Search</label>
-            <input type="search" name="Search" id="Search" value="<?php echo isset($_GET['Search']) ? $_GET['Search'] : ''; ?>" class="form-control me-2">
-            <select name="rows" id="rows" class="form-control me-2">
-                <option value="ten" <?php echo isset($_GET['rows']) && $_GET['rows'] == 'ten' ? 'selected' : ''; ?>>10</option>
-                <option value="twenty" <?php echo isset($_GET['rows']) && $_GET['rows'] == 'twenty' ? 'selected' : ''; ?>>20</option>
-                <option value="thirty" <?php echo isset($_GET['rows']) && $_GET['rows'] == 'thirty' ? 'selected' : ''; ?>>30</option>
-            </select>
-            <button type="submit" class="btn btn-primary">Search</button>
-        </form>
+    <div class="export-buttons">
+            <button class="csv-btn">CSV</button>
+            <button class="excel-btn">Excel</button>
+            <button class="print-btn">Print</button>
+        </div>
+    
+    <div class="search-container">
+        <label for="search-input" class="search-label">
+            <i class="fas fa-search search-icon"></i>
+        </label>
+        <input 
+            type="text" 
+            id="search-input" 
+            class="search-input" 
+            placeholder="Search records..."
+        >
     </div>
 </div>
+    </div>
+          
+            
+            <table class="attendance-table">
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>USN</th>
+                <th>Course</th>
+                <th>Time In</th>
+                <th>Time Out</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td data-label="Student Name">John Doe</td>
+                <td data-label="USN">1AY20CS001</td>
+                <td data-label="Course">Computer Science</td>
+                <td data-label="Time In">09:15 AM</td>
+                <td data-label="Time Out">04:30 PM</td>
+                <td data-label="Status">
+                    <span class="status-present">Present</span>
+                </td>
+            </tr>
+            <tr>
+                <td data-label="Student Name">Jane Smith</td>
+                <td data-label="USN">1AY20CS002</td>
+                <td data-label="Course">Software Engineering</td>
+                <td data-label="Time In">09:30 AM</td>
+                <td data-label="Time Out">04:45 PM</td>
+                <td data-label="Status">
+                    <span class="status-late">Late</span>
+                </td>
+            </tr>
+            <tr>
+                <td data-label="Student Name">Mike Johnson</td>
+                <td data-label="USN">1AY20CS003</td>
+                <td data-label="Course">Data Science</td>
+                <td data-label="Time In">-</td>
+                <td data-label="Time Out">-</td>
+                <td data-label="Status">
+                    <span class="status-absent">Absent</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-    <!-- Feedback Messages -->
-    <?php
-    if (isset($_GET['success'])) {
-        echo '<div class="alert alert-success text-center">Status updated successfully.</div>';
-    } elseif (isset($_GET['error'])) {
-        echo '<div class="alert alert-danger text-center">An error occurred: ' . htmlspecialchars($_GET['error']) . '</div>';
-    }
-    ?>
+    <div class="pagination">
+    <div class="pagination-info">
+        Showing <span id="start-entry">0</span> to <span id="end-entry">0</span> of <span id="total-entries">0</span> entries
+    </div>
+    <div class="pagination-controls">
+        <button id="prev-btn" class="pagination-btn" disabled>
+            <i class="fas fa-chevron-left"></i> Previous
+        </button>
+        <button id="next-btn" class="pagination-btn">
+            Next <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+</div>
+</div>
 
-    <!-- Table Section -->
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">Student List</h2>
-        <table class="table table-bordered table-striped table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID Number</th>
-                    <th>Name</th>
-                    <th>RFID</th>
-                    <th>USN</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-    <?php
-    require "./connect.php";
 
-    $limit = isset($_GET['rows']) ? (int)$_GET['rows'] : 10;
-    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+ <!-- Previous body content remains the same until the content div -->
+    <div class="content">
+        <!-- Record Navbar remains the same -->
+        
+        <!-- Daily Record section remains the same -->
+        
+        <!-- New Attendance Logs Section -->
+        <div id="attendance-logs">
+            <h1>Attendance Logs</h1>
+            
+            <div class="user-selector">
+                <label for="user-select">Select Student:</label>
+                <select id="user-select">
+                    <option value="1AY20CS001">John Doe (1AY20CS001)</option>
+                    <option value="1AY20CS002">Jane Smith (1AY20CS002)</option>
+                    <option value="1AY20CS003">Mike Johnson (1AY20CS003)</option>
+                </select>
+                
+                <div class="custom-date-wrapper">
+                    <input 
+                        type="date" 
+                        id="logDate" 
+                        name="logDate" 
+                        class="custom-date-input" 
+                        min="2024-01-01" 
+                        max="2025-12-31"
+                    >   
+                </div>
+            </div>
 
-    if ($limit <= 0) {
-        $limit = 10;
-    }
+            <table id="user-attendance-log" class="user-attendance-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time In</th>
+                        <th>Time Out</th>
+                        <th>Duration</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2024-01-15</td>
+                        <td>09:15 AM</td>
+                        <td>04:30 PM</td>
+                        <td>7h 15m</td>
+                        <td>
+                            <span class="status-present">Present</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-16</td>
+                        <td>09:30 AM</td>
+                        <td>04:45 PM</td>
+                        <td>7h 15m</td>
+                        <td>
+                            <span class="status-late">Late</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-17</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>
+                            <span class="status-absent">Absent</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-    $offset = ($page - 1) * $limit;
-    $search = isset($_GET['Search']) ? $_GET['Search'] : '';
-
-    $sql = "SELECT `ID_number`, `student name` AS student_name, `RFID`, `USN`, `status`
-            FROM `student_create`
-            WHERE `student name` LIKE '%$search%' OR `USN` LIKE '%$search%' OR `RFID` LIKE '%$search%'
-            LIMIT $offset, $limit";
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            echo "<tr>
-                    <td>{$row['ID_number']}</td>
-                    <td>{$row['student_name']}</td>
-                    <td>{$row['RFID']}</td>
-                    <td>{$row['USN']}</td>
-                    <td>" . ucfirst($row['status']) . "</td>
-                    <td>
-                        <a href='update_status.php?action=activate&id={$row['ID_number']}' class='btn btn-sm btn-success'>Activate</a>
-                        <a href='update_status.php?action=deactivate&id={$row['ID_number']}' class='btn btn-sm btn-warning'>Deactivate</a>
-                    <a href='update_status.php?action=delete&id=" . $row['ID_number'] . "' class='btn btn-sm btn-danger' onclick='return confirm(\"Are you sure you want to delete this student?\")'>Delete</a>
-
-                    </td>
-                </tr>";
+            <div class="pagination">
+                <div class="pagination-info">
+                    Showing <span id="log-start-entry">1</span> to <span id="log-end-entry">3</span> of <span id="log-total-entries">3</span> entries
+                </div>
+                <div class="pagination-controls">
+                    <button id="log-prev-btn" class="pagination-btn" disabled>
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <button id="log-next-btn" class="pagination-btn">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');   
         }
-    } else {
-        echo '<tr><td colspan="6" class="text-center">No records found.</td></tr>';
+        // Function to filter records based on input and date
+function filterRecords() {
+    // Select the record container (you might need to adjust this selector)
+    const recordContainer = document.querySelector('.container-record');
+
+    if(recordContainer.style.display == 'flex'){
+        recordContainer.style.display = 'none'
+    }
+    else{
+        recordContainer.style.display = 'flex'
+    }
+}
+
+// Add event listeners to filter inputs
+    const filterButton = document.querySelector('.button');
+        filterButton.addEventListener('click', filterRecords);
+        
+        document.addEventListener('DOMContentLoaded', function() {
+        const dateInput = document.getElementById('attendanceDate');
+        
+        // Set default value to today's date
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.value = today;
+
+        // Optional: Add change event listener
+        dateInput.addEventListener('change', function() {
+            console.log('Selected date:', this.value);
+        });
+    });
+
+    document.querySelector('.print').addEventListener('click',()=>{
+        console.log('cl')
+        window.print()
+    })
+ // Function to get table data
+ function getTableData() {
+            const table = document.querySelector('.attendance-table');
+            const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent);
+            const rows = Array.from(table.querySelectorAll('tbody tr')).map(row => 
+                Array.from(row.querySelectorAll('td')).map(td => td.textContent)
+            );
+            return { headers, rows };
+        }
+
+        // CSV Export
+        function exportToCSV() {
+            const { headers, rows } = getTableData();
+            
+            // Combine headers and rows
+            const csvContent = [
+                headers.join(','),
+                ...rows.map(row => row.join(','))
+            ].join('\n');
+
+            // Create a Blob with the CSV content
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            
+            // Create a link to download the file
+            if (navigator.msSaveBlob) { // For IE 10+
+                navigator.msSaveBlob(blob, 'attendance_report.csv');
+            } else {
+                link.href = URL.createObjectURL(blob);
+                link.download = 'attendance_report.csv';
+                link.click();
+            }
+        }
+
+        // Excel Export
+        function exportToExcel() {
+            const { headers, rows } = getTableData();
+            
+            // Create worksheet
+            const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+            
+            // Create workbook and download
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Attendance Report');
+            XLSX.writeFile(wb, 'attendance_report.xlsx');
+        }
+
+        // Print Function
+        function printTable() {
+            // Create a new window for printing
+            const printWindow = window.open('', '', 'height=500, width=800');
+            
+            // Get table HTML
+            const table = document.querySelector('.attendance-table');
+            const tableHTML = table.outerHTML;
+
+            // Create print content with basic styling
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>Attendance Report</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; }
+                            table { 
+                                width: 100%; 
+                                border-collapse: collapse; 
+                                margin-bottom: 20px; 
+                            }
+                            th, td { 
+                                border: 1px solid #ddd; 
+                                padding: 8px; 
+                                text-align: left; 
+                            }
+                            th { 
+                                background-color: #f2f2f2; 
+                                font-weight: bold; 
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>Attendance Report</h1>
+                        ${tableHTML}
+                        <p>Printed on: ${new Date().toLocaleString()}</p>
+                    </body>
+                </html>
+            `);
+
+            // Trigger print
+            printWindow.document.close();
+            printWindow.print();
+            printWindow.close();
+        }
+
+        // Add event listeners to export buttons
+        document.querySelector('.csv-btn').addEventListener('click', exportToCSV);
+        document.querySelector('.excel-btn').addEventListener('click', exportToExcel);
+        document.querySelector('.print-btn').addEventListener('click', printTable);
+        document.addEventListener('DOMContentLoaded', function() {
+    // Pagination variables
+    const table = document.querySelector('.attendance-table tbody');
+    const rows = table.querySelectorAll('tr');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const startEntrySpan = document.getElementById('start-entry');
+    const endEntrySpan = document.getElementById('end-entry');
+    const totalEntriesSpan = document.getElementById('total-entries');
+
+    // Pagination settings
+    const entriesPerPage = 1;
+    let currentPage = 1;
+    const totalEntries = rows.length;
+    const totalPages = Math.ceil(totalEntries / entriesPerPage);
+
+    // Function to update table visibility
+    function updateTableView() {
+        const startIndex = (currentPage - 1) * entriesPerPage;
+        const endIndex = startIndex + entriesPerPage;
+
+        rows.forEach((row, index) => {
+            row.style.display = (index >= startIndex && index < endIndex) ? '' : 'none';
+        });
+
+        // Update pagination info
+        const start = startIndex + 1;
+        const end = Math.min(endIndex, totalEntries);
+        
+        startEntrySpan.textContent = start;
+        endEntrySpan.textContent = end;
+        totalEntriesSpan.textContent = totalEntries;
+
+        // Update button states
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = currentPage === totalPages;
     }
 
-    $sql_count = "SELECT COUNT(*) AS total FROM `student_create` WHERE `student name` LIKE '%$search%' OR `USN` LIKE '%$search%' OR `RFID` LIKE '%$search%'";
-    $result_count = $conn->query($sql_count);
-    $total_rows = $result_count->fetch_assoc()['total'];
-    $total_pages = ($total_rows > 0) ? ceil($total_rows / $limit) : 1;
+    // Previous button event listener
+    prevBtn.addEventListener('click', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            updateTableView();
+        }
+    });
 
-    $conn->close();
-    ?>
+    // Next button event listener
+    nextBtn.addEventListener('click', function() {
+        if (currentPage < totalPages) {
+            currentPage++;
+            updateTableView();
+        }
+    });
 
-    <!-- Pagination Links -->
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
-                <a class="page-link" href="?page=1&rows=<?php echo $limit; ?>&Search=<?php echo urlencode($search); ?>" aria-label="First">
-                    <span aria-hidden="true">&laquo;&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item <?php if ($page <= 1) echo 'disabled'; ?>">
-                <a class="page-link" href="?page=<?php echo $page - 1; ?>&rows=<?php echo $limit; ?>&Search=<?php echo urlencode($search); ?>" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
+    // Initial view
+    updateTableView();
+});
+document.addEventListener('DOMContentLoaded', function() {
+    // Navigation between Daily Present and Attendance Logs
+    const navOptions = document.querySelectorAll('.nav-option');
+    const dailyPresentSection = document.querySelector('.daily-record');
+    const attendanceLogsSection = document.getElementById('');
 
-            <?php for ($i = 1; $i <= $total_pages; $i++) : ?>
-                <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                    <a class="page-link" href="?page=<?php echo $i; ?>&rows=<?php echo $limit; ?>&Search=<?php echo urlencode($search); ?>"><?php echo $i; ?></a>
-                </li>
-            <?php endfor; ?>
+    navOptions.forEach(option => {
+        option.addEventListener('click', function(e) {
+            // Remove active class from all options
+            navOptions.forEach(opt => opt.classList.remove('active'));
+            
+            // Add active class to clicked option
+            this.classList.add('active');
 
-            <li class="page-item <?php if ($page >= $total_pages) echo 'disabled'; ?>">
-                <a class="page-link" href="?page=<?php echo $page + 1; ?>&rows=<?php echo $limit; ?>&Search=<?php echo urlencode($search); ?>" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-            <li class="page-item <?php if ($page >= $total_pages) echo 'disabled'; ?>">
-                <a class="page-link" href="?page=<?php echo $total_pages; ?>&rows=<?php echo $limit; ?>&Search=<?php echo urlencode($search); ?>" aria-label="Last">
-                    <span aria-hidden="true">&raquo;&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-
-
-<!-- Bootstrap JS (Optional, for interactive components) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+            // Show/hide appropriate sections
+            if (this.dataset.section === 'daily-present') {
+                dailyPresentSection.style.display = 'block';
+                attendanceLogsSection.style.display = 'none';
+            } else {
+                dailyPresentSection.style.display = 'none';
+                attendanceLogsSection.style.display = 'block';
+            }
+        });
+    });
+});
+    </script>
+    
+    
 </body>
 </html>
