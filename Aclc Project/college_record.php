@@ -1,3 +1,39 @@
+<?php
+require './connect.php'; // Include database connection
+
+// Check if the required parameters (id and status) are provided
+if (isset($_POST['id']) && isset($_POST['status'])) {
+    $id = $_POST['id'];  // Get student ID from the request
+    $status = $_POST['status'];  // Get the new status ('active' or 'inactive')
+
+    // Debugging: Log received parameters
+    error_log("Received ID: $id, New Status: $status");
+
+    // Prepare the SQL statement to update the status
+    $sql = "UPDATE student_create SET status = ? WHERE ID_number = ?";
+    $stmt = $conn->prepare($sql);
+
+    // Bind the parameters to the prepared statement
+    $stmt->bind_param("si", $status, $id);  // 's' for string (status), 'i' for integer (ID)
+
+    // Execute the statement and check if the query was successful
+    if ($stmt->execute()) {
+        // Success: Return success message
+        echo "Status updated successfully";
+    } else {
+        // Failure: Return error message
+        echo "Error updating status";
+    }
+
+    $stmt->close();  // Close the prepared statement
+} else {
+    echo "Missing ID or Status";  // If parameters are missing, return error
+}
+
+$conn->close();  // Close the database connection
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,12 +42,16 @@
     <title>RFID Attendance Monitoring Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="css/college.css">
+    <link rel="stylesheet" href="css/senior.css">
+     <!-- Previous head content remains the same -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.15/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
 </head>
 <body>
     <div class="navbar">
         <div class="left-section">
-            <img src="./uploads/logo.png" alt="" width="40px" style="margin-right: 10px;">
+        <img src="./uploads/logo.png" alt="" width="40px" style="margin-right: 10px;">
             <h2>ACLC Administrator</h2>
             <div class="burger" onclick="toggleSidebar()">
                 <img width="25" height="25" src="https://img.icons8.com/ios-filled/50/menu--v1.png" alt="menu" />
@@ -26,7 +66,6 @@
             </ul>
         </div>
     </div>
-
     <div class="sidebar" id="sidebar">
         <header>CS31</header>
         <ul>
@@ -50,162 +89,576 @@
                     <li><a href="Guess_record.php">School</a></li>
                 </ul>
             </li>
+            <li><a href="Report.php"><img width="24" height="24" src="https://img.icons8.com/ios/50/bar-chart--v1.png" alt="bar-chart--v1"/><span>Reports</span></a></li>
             <li style="background:red;"><a href="logout.php">Logout</a></li>
         </ul>
     </div>
 
     <div class="content">
-        <div class="senior-table">
-        
-            <div class="header-section">
-                <h2>College High Records</h2>
-                <div class="header-section">
-            <select name="course" id="course">
-                        <option value="">Select Course</option>
-                        <option value="CS">Computer Science</option>
-                        <option value="AIS">Accounting Information Systems</option>
-                        <option value="ENTREP">Entrepreneurship</option>
-                        <option value="ACT">ACT</option>
-                    </select>
+    <div class="record-navbar">
+    <ul>
+        <li><a href="#" class="nav-option active" data-section="daily-present">Daily Present</a></li>
+        <li><a href="attendance.php" class="nav-option" data-section="attendance-logs">Rfid Logs</a></li>
+    </ul>
+</div>
+        <div class="daily-record">
+            <div class="title-header-container" >
+            <h1>Senior High</h1>
+            <button class="button">filter</button>
             </div>
-                <select name="course" id="course">
-                        <option value="">Select Section</option>
-                        <option value="A1">11A</option>
-                        <option value="A2">12A</option>
-                        <option value="A2">12B</option>
-                        <option value="A2">21A</option>
-                        <option value="A2">22A</option>
-                        <option value="A2">21B</option>
-                        <option value="A2">22B</option>
-                        <option value="A2">31A</option>
-                        <option value="A2">31B</option>
-                        <option value="A2">32A</option>
-                        <option value="A2">32B</option>
-                        <option value="A2">41A</option>
-                        <option value="A2">42A</option>
-                        <option value="A2">42B</option>
-                    </select>
-            </div>
-            <div class="search-section">
-                <div class="search-bar">
-                    <input type="text" id="searchInput" placeholder="Search...">
-                    <button onclick="searchTable()">Search</button>
+            <div class="container-record" >
+                    <input class="all" type="text" placeholder="All" >
+                    <div class="custom-date-wrapper">
+    <input 
+        type="date" 
+        id="attendanceDate" 
+        name="attendanceDate" 
+        class="custom-date-input" 
+        min="2024-01-01" 
+        max="2025-12-31"
+    >   
+</div>  
+                    <div>
+                    <button class="btn-record find" type="button"><a href="#"></a>Create Record</button>
+                    <button class="btn-record reset" type="button">Reset</button>
                 </div>
             </div>
-            <div class="action-buttons">
-                <button onclick="copyTable()">Copy</button>
-                <button onclick="exportToPDF()">PDF</button>
-                <button onclick="exportToExcel()">Excel</button>
-                <button onclick="printTable()">Print</button>
+            <hr>
+            <div style="display: none;" class="actions" >
+                <div>
+                    <h6>Show <input type="text"> entries</h6>
+                </div>
+                <div>
+                    <button>CSV</button>
+                    <button>Excel</button>
+                    <button class="print" >Print</button>
+                </div>
+                <div>
+                    <h6>Search: </h6>
+                    <input type="text">
+                </div>
             </div>
-            <div class="table-section">
-                <table id="studentTable">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Student Name</th>
-                            <th>RFID</th>
-                            <th>Course</th>
-                            <th>Year</th>
-                            <th>View Profile</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <?php
-
-        require "./connect.php"; // Ensure this file establishes the $conn connection
-        
-        // Define the college year filter
-        $collegeYear = "College"; // Adjust this value if needed
-        
-        // Prepare the SQL statement
-        $stmt = $conn->prepare("SELECT `Image`, `ID_number`, `student name`, `RFID`, `Course`, `Year` FROM `student_create` WHERE `Year` = ?");
-        $stmt->bind_param("s", $collegeYear);
-        
-        // Execute the statement
-        $stmt->execute();
-        $result = $stmt->get_result();
-        
-        // Check if there are results
-        if ($result->num_rows > 0) {
-            // Output data for each row
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . $row['ID_number'] . "</td>";
-                echo "<td>" . $row['student name'] . "</td>";
-                echo "<td>" . $row['RFID'] . "</td>";
-                echo "<td>" . $row['Course'] . "</td>";
-                echo "<td>" . $row['Year'] . "</td>";
-                echo "<td><button onclick=\"openRecordModal('" . $row['student name'] . "', '" . $row['ID_number'] . "', '" . $row['Course'] . "', '" . $row['Year'] . "')\">View Profile</button></td>";
-                echo "</tr>";
-            }
-        } else {
-            echo "<tr><td colspan='6'>No records found</td></tr>";
-        }
-        
-        // Close the statement and connection
-        $stmt->close();
-        $conn->close();
-        ?>
-                </tbody>
-                </table>
-            </div>
-        </div>
+            <div class="actions">
+            <div style="width: 100%;"  class="table-controls-container">
+    <div class="entries-selector">
+        <label for="entries-dropdown" class="entries-label">Show</label>
+        <select id="entries-dropdown" class="entries-dropdown">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+        <span class="entries-text">entries</span>
     </div>
 
-<div id="recordModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeRecordModal()">&times;</span>
-            <div class="student-profile">
-                <h2 id="studentName">Student Name</h2>
-                <p id="studentId">ID</p>
-                <p id="studentCourse">Course</p>
-                <p id="studentYear">Year</p>
-            </div>
-            <div class="attendance-calendar">
-                <h3>Attendance Calendar</h3>
-                <div id="calendar" class="calendar"></div>
-            </div>
+    
+    <div class="export-buttons">
+            <button class="csv-btn">CSV</button>
+            <button class="excel-btn">Excel</button>
+            <button class="print-btn">Print</button>
+        </div>
+    
+    <div class="search-container">
+        <label for="search-input" class="search-label">
+            <i class="fas fa-search search-icon"></i>
+        </label>
+        <input 
+            type="text" 
+            id="search-input" 
+            class="search-input" 
+            placeholder="Search records..."
+        >
+    </div>
+</div>
+    </div>          
+    <table class="attendance-table">
+    <thead>
+        <tr>
+            <th>Student ID</th>
+            <th>Image</th>
+            <th>Student name</th>
+            <th>Record</th>
+    </thead>
+    <tbody>
+    <?php
+require "./connect.php"; 
+$sql = "SELECT ID_number, `Last Name`, `First Name`, `Middle Name`, image, Year FROM student_create WHERE Year = 'College'";
+$result = $conn->query($sql);
+if ($result->num_rows > 0): ?>
+    <?php while ($row = $result->fetch_assoc()): ?>
+        <tr>
+            <td><?= $row['ID_number']; ?></td>
+            <td>
+                <?php if (!empty($row['image'])): ?>
+                    <img src="<?= $row['image']; ?>" alt="Image" width="50" height="50">
+                <?php else: ?>
+                    No Image Available
+                <?php endif; ?>
+            </td>
+            <td><?= htmlspecialchars($row['Last Name']) . ', ' . htmlspecialchars($row['First Name']) . ' ' . htmlspecialchars($row['Middle Name']); ?></td>
+            <td>
+                <!-- Add a button here -->
+                <button class="action-button" data-id="<?= $row['ID_number']; ?>">Action</button>
+            </td>
+        </tr>
+    <?php endwhile; ?>
+<?php else: ?>
+    <tr>
+        <td colspan="7">No Senior High data found</td>
+    </tr>
+<?php endif; ?>
+
+    </tbody>
+</table>
+
+<!-- Modal Structure -->
+<div id="attendanceModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Attendance for <span id="student-name"></span></h2>
+        
+        <!-- Calendar Section -->
+        <div id="calendar"></div>
+        
+        <div>
+            <button id="submit-attendance" class="action-button">Submit Attendance</button>
         </div>
     </div>
+</div>
+<script>
+    var modal = document.getElementById("attendanceModal");
+    var closeBtn = document.getElementsByClassName("close-btn")[0];
+    var submitBtn = document.getElementById("submit-attendance");
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('open');
-        }
-
-        function openRecordModal(name, id, course, year) {
-            document.getElementById('studentName').textContent = `Student Name: ${name}`;
-            document.getElementById('studentId').textContent = `ID: ${id}`;
-            document.getElementById('studentCourse').textContent = `Course: ${course}`;
-            document.getElementById('studentYear').textContent = `Year: ${year}`;
+    // Open modal and show calendar
+    document.querySelectorAll('.action-button').forEach(button => {
+        button.addEventListener('click', function() {
+            var studentName = this.getAttribute('data-name');
+            modal.style.display = "block";
+            document.getElementById("student-name").innerText = studentName;
             generateCalendar();
-            document.getElementById('recordModal').style.display = 'block';
+        });
+    });
+
+    // Close modal
+    closeBtn.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Function to generate a simple calendar for the current month
+    function generateCalendar() {
+        const calendarDiv = document.getElementById('calendar');
+        const today = new Date();
+        const month = today.getMonth(); // Current month
+        const year = today.getFullYear(); // Current year
+        
+        // Get the first day of the month and the total number of days
+        const firstDay = new Date(year, month, 1).getDay();
+        const totalDays = new Date(year, month + 1, 0).getDate();
+
+        // Clear any existing calendar
+        calendarDiv.innerHTML = '';
+
+        // Empty cells before the first day of the month
+        for (let i = 0; i < firstDay; i++) {
+            let emptyCell = document.createElement('div');
+            emptyCell.className = 'calendar-cell';
+            calendarDiv.appendChild(emptyCell);
         }
 
-        function closeRecordModal() {
-            document.getElementById('recordModal').style.display = 'none';
+        // Generate days of the month
+        for (let day = 1; day <= totalDays; day++) {
+            let dayCell = document.createElement('div');
+            dayCell.className = 'calendar-cell default';
+            dayCell.innerText = day;
+            dayCell.setAttribute('data-day', day);
+            dayCell.setAttribute('data-status', 'none');
+            
+            // Mark day as present or absent
+            dayCell.addEventListener('click', function() {
+                let status = this.getAttribute('data-status');
+                if (status === 'none') {
+                    this.classList.add('present');
+                    this.classList.remove('absent');
+                    this.setAttribute('data-status', 'present');
+                } else if (status === 'present') {
+                    this.classList.add('absent');
+                    this.classList.remove('present');
+                    this.setAttribute('data-status', 'absent');
+                } else {
+                    this.classList.add('default');
+                    this.classList.remove('absent');
+                    this.classList.remove('present');
+                    this.setAttribute('data-status', 'none');
+                }
+            });
+
+            calendarDiv.appendChild(dayCell);
         }
+    }
 
-        function generateCalendar() {
-            const calendar = document.getElementById('calendar');
-            calendar.innerHTML = '';
-            const daysInMonth = 30;
+    // Submit attendance data (handle data submission)
+    submitBtn.addEventListener('click', function() {
+        const attendanceData = [];
 
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dayDiv = document.createElement('div');
-                dayDiv.textContent = day;
-                dayDiv.className = day % 2 === 0 ? 'present' : 'absent';
-                calendar.appendChild(dayDiv);
+        document.querySelectorAll('.calendar-cell').forEach(cell => {
+            const day = cell.getAttribute('data-day');
+            const status = cell.getAttribute('data-status');
+            if (status !== 'none') {
+                attendanceData.push({ day: day, status: status });
             }
-        }
-    </script>
+        });
+
+        // Send attendance data to the server
+        fetch('record_attendance.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                studentName: document.getElementById("student-name").innerText,
+                attendance: attendanceData
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Attendance recorded:', data);
+            modal.style.display = "none";
+        })
+        .catch(error => {
+            console.error('Error recording attendance:', error);
+        });
+    });
+</script>
+
+    <div class="pagination">
+    <div class="pagination-info">
+        Showing <span id="start-entry">0</span> to <span id="end-entry">0</span> of <span id="total-entries">0</span> entries
+    </div>
+    <div class="pagination-controls">
+        <button id="prev-btn" class="pagination-btn" disabled>
+            <i class="fas fa-chevron-left"></i> Previous
+        </button>
+        <button id="next-btn" class="pagination-btn">
+            Next <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+</div>
+</div>
+
+
+ <!-- Previous body content remains the same until the content div -->
+    <div class="content">
+        <!-- Record Navbar remains the same -->
+        
+        <!-- Daily Record section remains the same -->
+        
+        <!-- New Attendance Logs Section -->
+        <div id="attendance-logs">
+            <h1>Attendance Logs</h1>
+            
+            <div class="user-selector">
+                <label for="user-select">Select Student:</label>
+                <select id="user-select">
+                    <option value="1AY20CS001">John Doe (1AY20CS001)</option>
+                    <option value="1AY20CS002">Jane Smith (1AY20CS002)</option>
+                    <option value="1AY20CS003">Mike Johnson (1AY20CS003)</option>
+                </select>
+                
+                <div class="custom-date-wrapper">
+                    <input 
+                        type="date" 
+                        id="logDate" 
+                        name="logDate" 
+                        class="custom-date-input" 
+                        min="2024-01-01" 
+                        max="2025-12-31"
+                    >   
+                </div>
+            </div>
+
+            <table id="user-attendance-log" class="user-attendance-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time In</th>
+                        <th>Time Out</th>
+                        <th>Duration</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2024-01-15</td>
+                        <td>09:15 AM</td>
+                        <td>04:30 PM</td>
+                        <td>7h 15m</td>
+                        <td>
+                            <span class="status-present">Present</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-16</td>
+                        <td>09:30 AM</td>
+                        <td>04:45 PM</td>
+                        <td>7h 15m</td>
+                        <td>
+                            <span class="status-late">Late</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-17</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>
+                            <span class="status-absent">Absent</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="pagination">
+                <div class="pagination-info">
+                    Showing <span id="log-start-entry">1</span> to <span id="log-end-entry">3</span> of <span id="log-total-entries">3</span> entries
+                </div>
+                <div class="pagination-controls">
+                    <button id="log-prev-btn" class="pagination-btn" disabled>
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <button id="log-next-btn" class="pagination-btn">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('open');   
         }
+        // Function to filter records based on input and date
+function filterRecords() {
+    // Select the record container (you might need to adjust this selector)
+    const recordContainer = document.querySelector('.container-record');
+
+    if(recordContainer.style.display == 'flex'){
+        recordContainer.style.display = 'none'
+    }
+    else{
+        recordContainer.style.display = 'flex'
+    }
+}
+
+// Add event listeners to filter inputs
+    const filterButton = document.querySelector('.button');
+        filterButton.addEventListener('click', filterRecords);
+        
+        document.addEventListener('DOMContentLoaded', function() {
+        const dateInput = document.getElementById('attendanceDate');
+        
+        // Set default value to today's date
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.value = today;
+
+        // Optional: Add change event listener
+        dateInput.addEventListener('change', function() {
+            console.log('Selected date:', this.value);
+        });
+    });
+
+    document.querySelector('.print').addEventListener('click',()=>{
+        console.log('cl')
+        window.print()
+    })
+ // Function to get table data
+ function getTableData() {
+            const table = document.querySelector('.attendance-table');
+            const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent);
+            const rows = Array.from(table.querySelectorAll('tbody tr')).map(row => 
+                Array.from(row.querySelectorAll('td')).map(td => td.textContent)
+            );
+            return { headers, rows };
+        }
+
+        // CSV Export
+        function exportToCSV() {
+            const { headers, rows } = getTableData();
+            
+            // Combine headers and rows
+            const csvContent = [
+                headers.join(','),
+                ...rows.map(row => row.join(','))
+            ].join('\n');
+
+            // Create a Blob with the CSV content
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            
+            // Create a link to download the file
+            if (navigator.msSaveBlob) { // For IE 10+
+                navigator.msSaveBlob(blob, 'attendance_report.csv');
+            } else {
+                link.href = URL.createObjectURL(blob);
+                link.download = 'attendance_report.csv';
+                link.click();
+            }
+        }
+
+        // Excel Export
+        function exportToExcel() {
+            const { headers, rows } = getTableData();
+            
+            // Create worksheet
+            const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+            
+            // Create workbook and download
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Attendance Report');
+            XLSX.writeFile(wb, 'attendance_report.xlsx');
+        }
+
+        // Print Function
+        function printTable() {
+            // Create a new window for printing
+            const printWindow = window.open('', '', 'height=500, width=800');
+            
+            // Get table HTML
+            const table = document.querySelector('.attendance-table');
+            const tableHTML = table.outerHTML;
+
+            // Create print content with basic styling
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>Attendance Report</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; }
+                            table { 
+                                width: 100%; 
+                                border-collapse: collapse; 
+                                margin-bottom: 20px; 
+                            }
+                            th, td { 
+                                border: 1px solid #ddd; 
+                                padding: 8px; 
+                                text-align: left; 
+                            }
+                            th { 
+                                background-color: #f2f2f2; 
+                                font-weight: bold; 
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>Attendance Report</h1>
+                        ${tableHTML}
+                        <p>Printed on: ${new Date().toLocaleString()}</p>
+                    </body>
+                </html>
+            `);
+
+            // Trigger print
+            printWindow.document.close();
+            printWindow.print();
+            printWindow.close();
+        }
+
+        // Add event listeners to export buttons
+        document.querySelector('.csv-btn').addEventListener('click', exportToCSV);
+        document.querySelector('.excel-btn').addEventListener('click', exportToExcel);
+        document.querySelector('.print-btn').addEventListener('click', printTable);
+        document.addEventListener('DOMContentLoaded', function() {
+    // Pagination variables
+    const table = document.querySelector('.attendance-table tbody');
+    const rows = table.querySelectorAll('tr');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const startEntrySpan = document.getElementById('start-entry');
+    const endEntrySpan = document.getElementById('end-entry');
+    const totalEntriesSpan = document.getElementById('total-entries');
+
+    // Pagination settings
+    const entriesPerPage = 5;
+    let currentPage = 5;
+    const totalEntries = rows.length;
+    const totalPages = Math.ceil(totalEntries / entriesPerPage);
+
+    // Function to update table visibility
+    function updateTableView() {
+        const startIndex = (currentPage - 1) * entriesPerPage;
+        const endIndex = startIndex + entriesPerPage;
+
+        rows.forEach((row, index) => {
+            row.style.display = (index >= startIndex && index < endIndex) ? '' : 'none';
+        });
+
+        // Update pagination info
+        const start = startIndex + 1;
+        const end = Math.min(endIndex, totalEntries);
+        
+        startEntrySpan.textContent = start;
+        endEntrySpan.textContent = end;
+        totalEntriesSpan.textContent = totalEntries;
+
+        // Update button states
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = currentPage === totalPages;
+    }
+
+    // Previous button event listener
+    prevBtn.addEventListener('click', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            updateTableView();
+        }
+    });
+
+    // Next button event listener
+    nextBtn.addEventListener('click', function() {
+        if (currentPage < totalPages) {
+            currentPage++;
+            updateTableView();
+        }
+    });
+
+    // Initial view
+    updateTableView();
+});
+document.addEventListener('DOMContentLoaded', function() {
+    // Navigation between Daily Present and Attendance Logs
+    const navOptions = document.querySelectorAll('.nav-option');
+    const dailyPresentSection = document.querySelector('.daily-record');
+    const attendanceLogsSection = document.getElementById('');
+
+    navOptions.forEach(option => {
+        option.addEventListener('click', function(e) {
+            // Remove active class from all options
+            navOptions.forEach(opt => opt.classList.remove('active'));
+            
+            // Add active class to clicked option
+            this.classList.add('active');
+
+            // Show/hide appropriate sections
+            if (this.dataset.section === 'daily-present') {
+                dailyPresentSection.style.display = 'block';
+                attendanceLogsSection.style.display = 'none';
+            } else {
+                dailyPresentSection.style.display = 'none';
+                attendanceLogsSection.style.display = 'block';
+            }
+        });
+    });
+});
     </script>
+    
+    
 </body>
-</html
+</html>

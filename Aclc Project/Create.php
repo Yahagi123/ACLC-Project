@@ -6,7 +6,9 @@ if (isset($_POST["Create"])) {
     require "./connect.php";
     
     // Sanitize inputs to prevent XSS and SQL injection
-    $Student = mysqli_real_escape_string($conn, $_POST['Name']);
+    $Last_name = mysqli_real_escape_string($conn, $_POST['Last_name']);
+    $First_name = mysqli_real_escape_string($conn, $_POST['First_name']);
+    $Middle_name = mysqli_real_escape_string($conn, $_POST['Middle_name']);
     $USN = mysqli_real_escape_string($conn, $_POST['USN']);
     $Email = mysqli_real_escape_string($conn, $_POST['Email']);
     $Address = mysqli_real_escape_string($conn, $_POST['Address']);
@@ -45,12 +47,12 @@ if (isset($_POST["Create"])) {
         }
     }
     
-    if (empty($Student) || empty($USN) || empty($Course) || empty($Year)) {
+    if (empty($USN) || empty($Course) || empty($Year)) {
         $emptyError = "There is a blank in the form.";
     } else {
         if (empty($emptyError)) {
-            $sql = "INSERT INTO `student_create`(`Image`, `student name`, `USN`,`Email Address`, `Address`, `Course`,Section, `Year`, `birthdate`) 
-                    VALUES ('$image', '$Student','$USN', '$Email', '$Address', '$Course','$section', '$Year', '$Birth')";
+            $sql = "INSERT INTO `student_create`(`Image`,`Last Name`, `First Name`, `Middle Name`, `USN`, `Email Address`, `Address`, `Course`, `Section`, `Year`,`birthdate`) 
+            VALUES ('$image','$Last_name','$First_name','$Middle_name','$USN','$Email','$Address','$Course','$section','$Year','$Birth')";
             
             if ($conn->query($sql)) {
                 $Create = "Successfully created new UID";
@@ -89,8 +91,16 @@ if (isset($_POST["Create"])) {
                     <input type="file" name="Image" id="Image">
                 </div>
                 <div class="label_container">
-                    <label for="Name">Full Name</label>
-                    <input type="text" name="Name" id="Name" placeholder="Enter Full Name">
+                    <label for="Last_name">Last Name</label>
+                    <input type="text" name="Last_name" id="Last_name" placeholder="Enter Last name">
+                </div>
+                <div class="label_container">
+                    <label for="Last_name">First Name</label>
+                    <input type="text" name="First_name" id="First_name" placeholder="Enter First name">
+                </div>
+                <div class="label_container">
+                    <label for="Middle_name">Middle Initial</label>
+                    <input type="text" name="Middle_name" id="Middle_name" placeholder="Enter Middle name">
                 </div>
                 <div class="label_container">
                     <label for="USN">Card Number</label>
@@ -132,7 +142,7 @@ if (isset($_POST["Create"])) {
                         <option value="31B">31B</option>
                         <option value="32A">32A</option>
                         <option value="32B">32B</option>
-                        <option value="41AA">41A</option>
+                        <option value="41A">41A</option>
                         <option value="42A">42A</option>
                         <option value="42B">42B</option>
                     </select>
@@ -146,7 +156,7 @@ if (isset($_POST["Create"])) {
                     <select name="year" id="year">
                         <option value="">Select Level</option>
                         <option value="College">College</option>
-                        <option value="Senior">Senior High</option>
+                        <option value="Senior High">Senior High</option>
                     </select>
                 </div>
                 <div class="submit">
@@ -155,7 +165,7 @@ if (isset($_POST["Create"])) {
                     <span><?php echo $emptyError; ?></span>
                 </div>
                 <div class="label_container">
-                 <button><a href="attendance.php">Back</a></but>
+                 <button><a href="attendance.php">Back</a></button>
                 </div>
                 
             </div>

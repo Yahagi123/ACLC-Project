@@ -65,7 +65,6 @@
     <div class="record-navbar">
     <ul>
         <li><a href="#" class="nav-option active" data-section="daily-present">Daily Present</a></li>
-        <li><a href="Rfid.php" class="nav-option" data-section="attendance-logs">Rfid Logs</a></li>
     </ul>
 </div>
         <div class="daily-record">

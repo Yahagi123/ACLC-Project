@@ -182,9 +182,8 @@ $conn->close();  // Close the database connection
     </thead>
     <tbody>
     <?php
-
 require "./connect.php"; 
-$sql = "SELECT ID_number, `student name`, image, Year FROM student_create WHERE Year = 'Senior'";
+$sql = "SELECT ID_number, `Last Name`, `First Name`, `Middle Name`, image, Year FROM student_create WHERE Year = 'Senior'";
 $result = $conn->query($sql);
 if ($result->num_rows > 0): ?>
     <?php while ($row = $result->fetch_assoc()): ?>
@@ -197,7 +196,7 @@ if ($result->num_rows > 0): ?>
                     No Image Available
                 <?php endif; ?>
             </td>
-            <td><?= htmlspecialchars($row['student name']); ?></td>
+            <td><?= htmlspecialchars($row['Last Name']) . ', ' . htmlspecialchars($row['First Name']) . ' ' . htmlspecialchars($row['Middle Name']); ?></td>
             <td>
                 <!-- Add a button here -->
                 <button class="action-button" data-id="<?= $row['ID_number']; ?>">Action</button>

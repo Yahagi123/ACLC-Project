@@ -100,8 +100,7 @@ $conn->close();
     <div class="content">
     <div class="record-navbar">
     <ul>
-        <li><a href="#" class="nav-option active" data-section="daily-present">Daily Present</a></li>
-        <li><a href="attendance.php" class="nav-option" data-section="attendance-logs">Rfid Logs</a></li>
+        <li><a href="#" class="nav-option active" data-section="daily-present">Rfid Logs</a></li>
     </ul>
 </div>
         <div class="daily-record">
@@ -187,36 +186,37 @@ $conn->close();
         </tr>
     </thead>
     <tbody>
-        <?php
-        require "./connect.php"; 
-        $sql = "SELECT ID_number, `student name`, USN, Course, Section, Year, status FROM student_create";
-        $result = $conn->query($sql);
-        if ($result->num_rows > 0): ?>
-            <?php while ($row = $result->fetch_assoc()): ?>
-                <tr>
-                    <td><?= $row['ID_number']; ?></td>
-                    <td><?= htmlspecialchars($row['student name']); ?></td>
-                    <td><?= htmlspecialchars($row['USN']); ?></td>
-                    <td><?= htmlspecialchars($row['Course']); ?></td>
-                    <td><?= htmlspecialchars($row['Section']); ?></td>
-                    <td><?= htmlspecialchars($row['Year']); ?></td>
-                    <td>
-                        <button 
-                            class="status-button <?= $row['status'] === 'active' ? 'active' : 'inactive'; ?>" 
-                            data-id="<?= $row['ID_number']; ?>" 
-                            data-status="<?= $row['status']; ?>" 
-                            onclick="updateStatus(this)">
-                            <?= $row['status'] === 'active' ? 'Deactivate' : 'Activate'; ?>
-                        </button>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-        <?php else: ?>
+    <?php
+    require "./connect.php"; 
+    $sql = "SELECT ID_number, `Last Name`, `First Name`, `Middle Name`, USN, Course, Section, Year, status FROM student_create";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0): ?>
+        <?php while ($row = $result->fetch_assoc()): ?>
             <tr>
-                <td colspan="7">No data found</td>
+                <td><?= $row['ID_number']; ?></td>
+                <td><?= htmlspecialchars($row['Last Name']) ?>, <?= htmlspecialchars($row['First Name']) ?> <?= htmlspecialchars($row['Middle Name']) ?></td> <!-- Display full name -->
+                <td><?= htmlspecialchars($row['USN']); ?></td>
+                <td><?= htmlspecialchars($row['Course']); ?></td>
+                <td><?= htmlspecialchars($row['Section']); ?></td>
+                <td><?= htmlspecialchars($row['Year']); ?></td>
+                <td>
+                    <button 
+                        class="status-button <?= $row['status'] === 'active' ? 'active' : 'inactive'; ?>" 
+                        data-id="<?= $row['ID_number']; ?>" 
+                        data-status="<?= $row['status']; ?>" 
+                        onclick="updateStatus(this)">
+                        <?= $row['status'] === 'active' ? 'Deactivate' : 'Activate'; ?>
+                    </button>
+                </td>
             </tr>
-        <?php endif; ?>
-    </tbody>
+        <?php endwhile; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="7">No data found</td>
+        </tr>
+    <?php endif; ?>
+</tbody>
+
 </table>
     <script>
   function updateStatus(button) {

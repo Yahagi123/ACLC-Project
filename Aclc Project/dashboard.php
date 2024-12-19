@@ -1,26 +1,30 @@
 <?php
 require "./connect.php";
+
+// Query to count the number of college students
 $query = "SELECT COUNT(*) AS college_count FROM student_create WHERE Year = 'College' ";
-
 $result = mysqli_query($conn, $query);
 $row = mysqli_fetch_assoc($result);
-
-// Get the number of college students
 $college_count = $row['college_count']; 
-$query = "SELECT COUNT(*) AS senior_count FROM student_create WHERE Year = 'Senior' ";
 
+// Query to count the number of Senior High students
+$query = "SELECT COUNT(*) AS senior_count FROM student_create WHERE Year = 'Senior' ";
 $result = mysqli_query($conn, $query);
 $row = mysqli_fetch_assoc($result);
-
-// Get the number of Senior High students
 $senior_count = $row['senior_count'];
 
+// Query to get the total number of students
 $query = "SELECT COUNT(*) AS All_count FROM student_create ";
-
 $result = mysqli_query($conn, $query);
 $row = mysqli_fetch_assoc($result);
 $All_student = $row['All_count'];
+
+// Calculate percentages
+$senior_percentage = ($All_student > 0) ? ($senior_count / $All_student) * 100 : 0;
+$college_percentage = ($All_student > 0) ? ($college_count / $All_student) * 100 : 0;
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -80,7 +84,7 @@ $All_student = $row['All_count'];
                 </ul>
             </li>
             <li><a href="Report.php"><img width="24" height="24" src="https://img.icons8.com/ios/50/bar-chart--v1.png" alt="bar-chart--v1"/><span>Reports</span></a></li>
-            <li style="background:red;"><a href="logout.php">Logout</a></li>
+            <li style="background:red;"><img width="24" height="24" src="https://img.icons8.com/ios-glyphs/30/shutdown--v1.png" alt="shutdown--v1"/><a href="logout.php"><span>Logout</span></a></li>
         </ul>
     </div>
 
@@ -120,7 +124,7 @@ $All_student = $row['All_count'];
         <?php
             require './connect.php';
 
-            $sql = "SELECT Username, Email, Role FROM user WHERE UID = 1"; 
+            $sql = "SELECT Username, Email, Role FROM user WHERE UID = 6"; 
             $result = $conn->query($sql);
 
             // Check if the query returned a result
@@ -194,7 +198,44 @@ $All_student = $row['All_count'];
 
         </div>
     </div>
+    <script>
+    // Pass PHP variables to JavaScript for pie chart
+    const seniorHighPercentage = <?php echo $senior_percentage; ?>;
+    const collegePercentage = <?php echo $college_percentage; ?>;
 
+    // Pie chart configuration
+    const ctxPie = document.getElementById('pieChart').getContext('2d');
+    const pieChart = new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: [
+                `Senior High - ${seniorHighPercentage.toFixed(2)}%`,  // Display percentage in the label
+                `College - ${collegePercentage.toFixed(2)}%`         // Display percentage in the label
+            ],
+            datasets: [{
+                label: 'Attendance Overview',
+                data: [seniorHighPercentage, collegePercentage],  // Use the dynamic percentage values
+                backgroundColor: [
+                    'rgb(4, 46, 110)',
+                    'rgb(101, 5, 25)',
+                ],
+                borderColor: [
+                    'rgb(255, 255, 255)',
+                    'rgb(250, 250, 250)',
+                ],
+                borderWidth: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+            }
+        }
+    });
+</script>
     <script>
         //Hamburger Bar
         function toggleSidebar() {
@@ -213,41 +254,6 @@ function filterRecords() {
         recordContainer.style.display = 'flex'
     }
 }
-        // Pie chart configuration
-        const ctxPie = document.getElementById('pieChart').getContext('2d');
-        const pieChart = new Chart(ctxPie, {
-            type: 'pie',
-            data: {
-                labels: ['Present', 'Absent', 'Late'],
-                datasets: [{
-                    label: 'Attendance Overview',
-                    data: [50, 30, 20], // Replace with dynamic data if needed
-                    backgroundColor: [
-                        'rgba(75, 192, 192, 0.6)',
-                        'rgba(255, 99, 132, 0.6)',
-                        'rgba(255, 205, 86, 0.6)'
-                    ],
-                    borderColor: [
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 205, 86, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                }
-            }
-        });
-
-        // Diagonal line chart configuration
-        // Diagonal bar chart configuration
-// Horizontal bar chart configuration
 <?php
 require "./connect.php";
 // Assuming you're already connected to the database

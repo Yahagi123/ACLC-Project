@@ -36,7 +36,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             }
 
             // Insert into the rfid_logs table
-            $studentName = mysqli_real_escape_string($conn, $row['student name']);
+            $lastName = mysqli_real_escape_string($conn, $row['Last Name']);
+            $firstName = mysqli_real_escape_string($conn, $row['First Name']);
+            $middleName = mysqli_real_escape_string($conn, $row['Middle Name']);
+            $studentName = "$lastName, $firstName $middleName";
             $course = mysqli_real_escape_string($conn, $row['Course']);
             $year = mysqli_real_escape_string($conn, $row['Year']);
             $image = isset($row['Image']) ? mysqli_real_escape_string($conn, $row['Image']) : 'path/to/default-image.jpg';
@@ -102,21 +105,22 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
     <!-- Navigation -->
     <nav class="bg-white shadow-md">
-            <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16">
-                    <div class="flex">
-                        <div class="flex-shrink-0 flex items-center">
-                            <img src="./uploads/logo.png" alt="" width="40px">
-                            <h1 class="text-2xl font-bold text-blue-600 ml-5">Attendance System</h1>
-                        </div>
-                    </div>
-                    <div class="flex items-center">
-                        <a href="SignIn.php" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-300 flex items-center">
-                            <i class="fa-solid fa-user mr-2"></i>Sign In</a>
+        <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img src="./uploads/logo.png" alt="" width="40px">
+                        <h1 class="text-2xl font-bold text-blue-600 ml-5">Attendance System</h1>
                     </div>
                 </div>
+                <div class="flex items-center">
+                    <a href="SignIn.php" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-300 flex items-center">
+                        <i class="fa-solid fa-user mr-2"></i>Sign In</a>
+                </div>
             </div>
-        </nav>
+        </div>
+    </nav>
+
     <!-- Main Container -->
     <div class="full-screen-container max-w-full mx-auto px-4 sm:px-6 lg:px-8 mt-4">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 h-full">
@@ -130,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 </div>
             </div>
 
-            <!-- Student Information - Full Width -->
+            <!-- Student Information -->
             <div class="bg-white shadow-lg rounded-lg p-4 md:col-span-2 h-full">
                 <div class="flex items-center h-full space-x-6">
                     <img src="<?= isset($row['Image']) ? htmlspecialchars($row['Image']) : 'path/to/default-image.jpg' ?>" 
@@ -139,13 +143,14 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     
                     <div class="student-details flex-grow">
                         <?php if (!empty($rfid) && isset($row)) { ?>
-                            <h2 class="text-2xl font-bold text-gray-800 mb-3"><?= htmlspecialchars($row['student name']) ?></h2>
+                            <h2 class="text-2xl font-bold text-gray-800 mb-3">
+                                <?= htmlspecialchars($row['Last Name']) ?>, <?= htmlspecialchars($row['First Name']) ?> <?= htmlspecialchars($row['Middle Name']) ?>
+                            </h2>
                             <div class="space-y-2">
                                 <p class="text-lg text-gray-600"><strong>USN:</strong> <?= htmlspecialchars($row['USN']) ?></p>
                                 <p class="text-lg text-gray-600"><strong>Course:</strong> <?= htmlspecialchars($row['Course']) ?></p>
                                 <p class="text-lg text-gray-600"><strong>Section:</strong> <?= htmlspecialchars($row['Section']) ?></p>
                                 <p class="text-lg text-gray-600"><strong>Year:</strong> <?= htmlspecialchars($row['Year']) ?></p>
-                                
                             </div>
                         <?php } else { ?>
                             <h2 class="text-2xl font-semibold text-gray-400">No Student Selected</h2>
@@ -155,39 +160,22 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             </div>
 
             <!-- RFID Scanner -->
-<!-- RFID Scanner -->
-<div class="bg-white shadow-lg rounded-lg p-4 h-full flex items-center">
-    <form action="index.php" method="post" class="flex w-full" id="rfidForm">
-        <input 
-            type="text" 
-            name="scan" 
-            id="scan" 
-            placeholder="Scan Your ID Here" 
-            class="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            oninput="autoSubmit()" 
-            autofocus 
-        >
-    </form>
-</div>
+            <div class="bg-white shadow-lg rounded-lg p-4 h-full flex items-center">
+                <form action="index.php" method="post" class="flex w-full" id="rfidForm">
+                    <input 
+                        type="text" 
+                        name="scan" 
+                        id="scan" 
+                        placeholder="Scan Your ID Here" 
+                        class="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        oninput="autoSubmit()" 
+                        autofocus 
+                    >
+                </form>
+            </div>
 
-<script>
-    // Automatically submit the form when a value is entered in the RFID scan field
-    function autoSubmit() {
-        const scanInput = document.getElementById('scan');
-        if (scanInput.value.trim() !== "") {
-            document.getElementById('rfidForm').submit();
-        }
-    }
-
-    // Focus the RFID input field when the page loads
-    window.onload = function() {
-        document.getElementById('scan').focus();
-    };
-</script>
-
-
-<!-- Today's Attendance - Full Width -->
-<div class="bg-white shadow-lg rounded-lg p-4 md:col-span-3">
+            <!-- Today's Attendance -->
+            <div class="bg-white shadow-lg rounded-lg p-4 md:col-span-3">
     <h3 class="text-xl font-semibold mb-4 text-gray-800">Today's Attendance</h3>
     <div class="overflow-x-auto">
         <table class="w-full">
