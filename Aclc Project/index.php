@@ -209,7 +209,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 </div>
 
 
-<!-- Recent Logs - Full Width -->
 <div class="bg-white shadow-lg rounded-lg p-4 md:col-span-3">
     <h3 class="text-xl font-semibold mb-4 text-gray-800">Recent Activity</h3>
     <div class="overflow-x-auto">
@@ -227,48 +226,75 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 </tr>
             </thead>
             <tbody>
-                <?php
-                $sqlHistory = "SELECT student_name, USN, course, year, 
-                                      DATE_FORMAT(CONVERT_TZ(time_in, '+00:00', '+08:00'), '%h:%i %p') AS formatted_time_in, 
-                                      DATE_FORMAT(CONVERT_TZ(time_out, '+00:00', '+08:00'), '%h:%i %p') AS formatted_time_out, 
-                                      DATE_FORMAT(CONVERT_TZ(date_logged, '+00:00', '+08:00'), '%d/%m/%Y') AS formatted_date_logged, 
-                                      image 
-                               FROM rfid_logs 
-                               ORDER BY time_in DESC 
-                               LIMIT 4";
-                $historyResult = mysqli_query($conn, $sqlHistory);
+            <?php
+$sqlHistory = "SELECT student_name, USN, course, year, 
+                      DATE_FORMAT(time_in, '%h:%i %p') AS formatted_time_in, 
+                      DATE_FORMAT(time_out, '%h:%i %p') AS formatted_time_out, 
+                      DATE_FORMAT(date_logged, '%d/%m/%Y') AS formatted_date_logged, 
+                      image 
+               FROM rfid_logs 
+               WHERE date_logged = CURDATE() -- Filter only today's logs
+               ORDER BY time_in DESC 
+               LIMIT 4";
 
-                if (mysqli_num_rows($historyResult) > 0) {
-                    while ($historyRow = mysqli_fetch_assoc($historyResult)) {
-                        $timeIn = $historyRow['formatted_time_in'] ?: '<span class="text-gray-400">---</span>';
-                        $timeOut = $historyRow['formatted_time_out'] ?: '<span class="text-gray-400">---</span>';
-                        $dateLogged = $historyRow['formatted_date_logged'];
-                        ?>
-                        <tr class="border-b">
-                            <td class="py-2 px-4">
-                                <img src="<?= htmlspecialchars($historyRow['image']) ?>" 
-                                     alt="Student Image" 
-                                     class="w-12 h-12 rounded-full object-cover">
-                            </td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($historyRow['student_name']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($historyRow['USN']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($historyRow['course']) ?></td>
-                            <td class="py-2 px-4"><?= htmlspecialchars($historyRow['year']) ?></td>
-                            <td class="py-2 px-4"><?= $timeIn ?></td>
-                            <td class="py-2 px-4"><?= $timeOut ?></td>
-                            <td class="py-2 px-4"><?= $dateLogged ?></td>
-                        </tr>
-                    <?php }
-                } else { ?>
-                    <tr>
-                        <td colspan="8" class="py-4 text-center text-gray-500">No recent logs found</td>
-                    </tr>
-                <?php } ?>
+$historyResult = mysqli_query($conn, $sqlHistory);
+
+if (mysqli_num_rows($historyResult) > 0) {
+    while ($historyRow = mysqli_fetch_assoc($historyResult)) {
+        $timeIn = $historyRow['formatted_time_in'] ?: '<span class="text-gray-400">---</span>';
+        $timeOut = $historyRow['formatted_time_out'] ?: '<span class="text-gray-400">---</span>';
+        $dateLogged = $historyRow['formatted_date_logged'];
+        ?>
+        <tr class="border-b">
+            <td class="py-2 px-4">
+                <img src="<?= htmlspecialchars($historyRow['image']) ?>" 
+                     alt="Student Image" 
+                     class="w-12 h-12 rounded-full object-cover">
+            </td>
+            <td class="py-2 px-4"><?= htmlspecialchars($historyRow['student_name']) ?></td>
+            <td class="py-2 px-4"><?= htmlspecialchars($historyRow['USN']) ?></td>
+            <td class="py-2 px-4"><?= htmlspecialchars($historyRow['course']) ?></td>
+            <td class="py-2 px-4"><?= htmlspecialchars($historyRow['year']) ?></td>
+            <td class="py-2 px-4" id="time-in-<?= $historyRow['USN'] ?>"><?= $timeIn ?></td>
+            <td class="py-2 px-4" id="time-out-<?= $historyRow['USN'] ?>"><?= $timeOut ?></td>
+            <td class="py-2 px-4"><?= $dateLogged ?></td>
+        </tr>
+    <?php }
+} else { ?>
+    <tr>
+        <td colspan="8" class="py-4 text-center text-gray-500">No recent logs found</td>
+    </tr>
+<?php } ?>
+
             </tbody>
         </table>
     </div>
 </div>
 
+<script>
+    // Function to format the current time
+    function formatTime(date) {
+        return date.toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+    }
+
+    // Update the Time In and Time Out columns to current time
+    window.addEventListener('load', () => {
+        const now = new Date();
+        const formattedTime = formatTime(now);
+
+        // Loop through each Time In and Time Out field
+        const timeInElements = document.querySelectorAll('[id^="time-in-"]');
+        const timeOutElements = document.querySelectorAll('[id^="time-out-"]');
+
+        // Set the current time for each student record
+        timeInElements.forEach(element => {
+            element.innerText = formattedTime; // Set Time In
+        });
+        timeOutElements.forEach(element => {
+            element.innerText = formattedTime; // Set Time Out
+        });
+    });
+</script>
 
 
     <script>
