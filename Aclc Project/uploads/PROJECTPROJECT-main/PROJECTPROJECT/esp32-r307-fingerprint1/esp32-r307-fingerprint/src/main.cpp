@@ -731,36 +731,36 @@ void readmode()
       Serial.println("Scan your fingerprint");
       break;
     case FINGERPRINT_OK:
-    if(OwnerOne = 1 ){
-      if(inputFingerprintId != 1){
-        Serial.println("Access Denied due to multiple attempts with no match.. contact owner!");
-        showNotAllowedSMS();
-        break;
-      }
-    }
+    // if(OwnerOne = 1 ){
+    //   if(inputFingerprintId != 1){
+    //     Serial.println("Access Denied due to multiple attempts with no match.. contact owner!");
+    //     showNotAllowedSMS();
+    //     break;
+    //   }
+    // }
       Serial.println("Access Granted..opening door lock!");
       previousOpenMillis = millis();
       isOpen = true;
       digitalWrite(RELAY_PIN, HIGH);
       counter = 0;
       OwnerOne = 0;
+      Serial.println("Owner One set = " + OwnerOne);
       break;
     case FINGERPRINT_NOTFOUND:
-      counter++;
       Serial.println("Access Denied");
       
-      if(counter >= 3 ){
-        insertToSuspiciousLogsLogs("MALICIOUS");
-        dashboardSendThisTo("alert-attempt","LOCKED DUE TO MULTIPLE ATTEMPTS");
-        showNotAllowedSMS();
-        OwnerOne = 1; // locked mode
-        delay(2000);
-        break;
-      }
-      dashboardSendThisTo("alert-attempt","SUSPICIOUS");
-      insertToSuspiciousLogsLogs("SUSPICIOUS");
-      showNotAllowed();
-      delay(2000);
+      // if(counter >= 3 ){
+      //   insertToSuspiciousLogsLogs("MALICIOUS");
+      //   dashboardSendThisTo("alert-attempt","LOCKED DUE TO MULTIPLE ATTEMPTS");
+      //   showNotAllowedSMS();
+      //   OwnerOne = 1; // locked mode
+      //   delay(2000);
+      //   break;
+      // }
+      // dashboardSendThisTo("alert-attempt","SUSPICIOUS");
+      // insertToSuspiciousLogsLogs("SUSPICIOUS");
+      // showNotAllowed();
+      // delay(2000);
       break;
     case FINGERPRINT_PACKETRECIEVEERR:
     case FINGERPRINT_IMAGEFAIL:
@@ -919,6 +919,7 @@ uint8_t getFingerprintEnroll() {
   // Store the fingerprint model
   p = finger.storeModel(id);
   if (p == FINGERPRINT_OK) {
+
     Serial.println("Stored!");
     sendToFrontendStatus("success");
     sendEnrollmentStatus(true, "Fingerprint stored successfully");
