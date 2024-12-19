@@ -697,3 +697,20 @@ color: #0056b3;
     border-radius: 5px;
     font-size: 0.9rem;
 }
+.status-button {
+    padding: 6px 12px;
+    font-size: 14px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.status-button:hover {
+    background-color: #45a049;
+}
+
+.status-button:focus {
+    outline: none;
+}

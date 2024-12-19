@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +9,7 @@
     <title>RFID Attendance Monitoring Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="css/report.css">
+    <link rel="stylesheet" href="css/attendance.css">
      <!-- Previous head content remains the same -->
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.15/jspdf.plugin.autotable.min.js"></script>
@@ -54,7 +57,6 @@
                 </ul>
             </li>
             <li><a href="Report.php"><img width="24" height="24" src="https://img.icons8.com/ios/50/bar-chart--v1.png" alt="bar-chart--v1"/><span>Reports</span></a></li>
-            <li><a href="teacher.php"><img width="24" height="24" src="https://img.icons8.com/windows/32/training.png" alt="training"/><span>Teacher</span></a></li>
             <li style="background:red;"><a href="logout.php">Logout</a></li>
         </ul>
     </div>
@@ -105,15 +107,35 @@
             </div>
             <div class="actions">
             <div style="width: 100%;"  class="table-controls-container">
+            <!-- Entries Selection -->
+            <?php
+            require "./connect.php";
+            $limit = isset($_POST['entries_limit']) ? (int)$_POST['entries_limit'] : 10;
+            $sql = "SELECT * FROM rfid_logs LIMIT $limit";
+            $result = $conn->query($sql);
+            ?>      
     <div class="entries-selector">
+    <form method="POST" action="">
         <label for="entries-dropdown" class="entries-label">Show</label>
-        <select id="entries-dropdown" class="entries-dropdown">
-            <option value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
+        <select name="entries_limit" id="entries-dropdown" class="entries-dropdown" onchange="this.form.submit()">
+            <option value="10" <?php echo $limit == 10 ? 'selected' : ''; ?>>10</option>
+            <option value="20" <?php echo $limit == 20 ? 'selected' : ''; ?>>20</option>
+            <option value="50" <?php echo $limit == 50 ? 'selected' : ''; ?>>50</option>
         </select>
         <span class="entries-text">entries</span>
+    </form>
+    
+        <div class="course-selector" style="display: flex; align-items: center; gap: 5px;">
+        <label for="course-dropdown" class="course-label">Year</label>
+        <form method="GET" action="attendance.php">
+    <label for="year">Select Year:</label>
+    <select name="year" id="year">
+        <option value="Senior">Senior</option>
+        <option value="College">College</option>
+    </select>
+    <button type="submit">Filter</button>
+</form>
+    </div>
     </div>
 
     
@@ -141,45 +163,60 @@
             <table class="attendance-table">
         <thead>
             <tr>
+                <th>Num ID</th>
+                <th>Image</th>
                 <th>Student Name</th>
                 <th>USN</th>
                 <th>Course</th>
+                <th>Section</th>
+                <th>Year</th>
                 <th>Time In</th>
                 <th>Time Out</th>
+                <th>Date Logged</th>
                 <th>Status</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td data-label="Student Name">John Doe</td>
-                <td data-label="USN">1AY20CS001</td>
-                <td data-label="Course">Computer Science</td>
-                <td data-label="Time In">09:15 AM</td>
-                <td data-label="Time Out">04:30 PM</td>
-                <td data-label="Status">
-                    <span class="status-present">Present</span>
-                </td>
-            </tr>
-            <tr>
-                <td data-label="Student Name">Jane Smith</td>
-                <td data-label="USN">1AY20CS002</td>
-                <td data-label="Course">Software Engineering</td>
-                <td data-label="Time In">09:30 AM</td>
-                <td data-label="Time Out">04:45 PM</td>
-                <td data-label="Status">
-                    <span class="status-late">Late</span>
-                </td>
-            </tr>
-            <tr>
-                <td data-label="Student Name">Mike Johnson</td>
-                <td data-label="USN">1AY20CS003</td>
-                <td data-label="Course">Data Science</td>
-                <td data-label="Time In">-</td>
-                <td data-label="Time Out">-</td>
-                <td data-label="Status">
-                    <span class="status-absent">Absent</span>
-                </td>
-            </tr>
+        <?php
+                require "./connect.php";
+
+                // Get the selected year from the form
+                $selectedYear = isset($_GET['year']) ? $_GET['year'] : null;
+
+                if ($selectedYear) {
+                    // Filter the query based on the selected year
+                    $sql = "SELECT * FROM rfid_logs WHERE year = ?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("s", $selectedYear);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                } else {
+                    // Default: show all Senior and College rows
+                    $sql = "SELECT * FROM rfid_logs WHERE year IN ('Senior', 'College')";
+                    $result = $conn->query($sql);
+                }
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row['id'] . "</td>";
+                        echo "<td><img src='" . $row['image'] . "' alt='Image' width='50' height='50'></td>";
+                        echo "<td>" . $row['student_name'] . "</td>";
+                        echo "<td>" . $row['USN'] . "</td>";
+                        echo "<td>" . $row['course'] . "</td>";
+                        echo "<td>" . $row['Section'] . "</td>";
+                        echo "<td>" . $row['year'] . "</td>";
+                        echo "<td>" . $row['time_in'] . "</td>";
+                        echo "<td>" . $row['time_out'] . "</td>";
+                        echo "<td>" . $row['date_logged'] . "</td>";
+                        echo "<td>" . $row['Status'] . "</td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='11'>No records found</td></tr>";
+                }
+             ?>
+
         </tbody>
     </table>
 
@@ -240,34 +277,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2024-01-15</td>
-                        <td>09:15 AM</td>
-                        <td>04:30 PM</td>
-                        <td>7h 15m</td>
-                        <td>
-                            <span class="status-present">Present</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2024-01-16</td>
-                        <td>09:30 AM</td>
-                        <td>04:45 PM</td>
-                        <td>7h 15m</td>
-                        <td>
-                            <span class="status-late">Late</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2024-01-17</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>
-                            <span class="status-absent">Absent</span>
-                        </td>
-                    </tr>
-                </tbody>
+                  
+                </tbody>    
             </table>
 
             <div class="pagination">
@@ -432,8 +443,8 @@ function filterRecords() {
     const totalEntriesSpan = document.getElementById('total-entries');
 
     // Pagination settings
-    const entriesPerPage = 1;
-    let currentPage = 1;
+    const entriesPerPage = 10;
+    let currentPage = 10;
     const totalEntries = rows.length;
     const totalPages = Math.ceil(totalEntries / entriesPerPage);
 

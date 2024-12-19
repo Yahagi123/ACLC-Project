@@ -697,3 +697,20 @@ color: #0056b3;
     border-radius: 5px;
     font-size: 0.9rem;
 }
+.entries-selector, .course-selector {
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.course-label, .entries-label {
+    font-weight: 500;
+    margin-right: 5px;
+}
+
+.course-dropdown, .entries-dropdown {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    font-size: 14px;
+}

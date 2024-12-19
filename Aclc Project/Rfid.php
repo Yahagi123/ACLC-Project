@@ -1,3 +1,42 @@
+<?php
+require './connect.php'; // Include database connection
+
+// Check if the required parameters (id and status) are provided
+if (isset($_POST['id']) && isset($_POST['status'])) {
+    $id = $_POST['id'];  // Get student ID from the request
+    $status = $_POST['status'];  // Get the new status ('active' or 'inactive')
+
+    // Debugging: Log received parameters
+    error_log("Received ID: $id, New Status: $status");
+
+    // Prepare the SQL statement to update the status
+    $sql = "UPDATE student_create SET status = ? WHERE ID_number = ?";
+    $stmt = $conn->prepare($sql);
+
+    // Bind the parameters to the prepared statement
+    $stmt->bind_param("si", $status, $id);  // 's' for string (status), 'i' for integer (ID)
+
+    // Execute the statement and check if the query was successful
+    if ($stmt->execute()) {
+        // Success: Return success message
+        echo "Status updated successfully";
+    } else {
+        // Failure: Return error message
+        echo "Error updating status";
+    }
+
+    $stmt->close();  // Close the prepared statement
+} else {
+    echo "Missing ID or Status";  // If parameters are missing, return error
+}
+
+$conn->close();  // Close the database connection
+?>
+
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +45,7 @@
     <title>RFID Attendance Monitoring Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="rfid.css">
+    <link rel="stylesheet" href="css/rfid.css">
      <!-- Previous head content remains the same -->
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.15/jspdf.plugin.autotable.min.js"></script>
@@ -54,7 +93,6 @@
                 </ul>
             </li>
             <li><a href="Report.php"><img width="24" height="24" src="https://img.icons8.com/ios/50/bar-chart--v1.png" alt="bar-chart--v1"/><span>Reports</span></a></li>
-            <li><a href="teacher.php"><img width="24" height="24" src="https://img.icons8.com/windows/32/training.png" alt="training"/><span>Teacher</span></a></li>
             <li style="background:red;"><a href="logout.php">Logout</a></li>
         </ul>
     </div>
@@ -68,7 +106,7 @@
 </div>
         <div class="daily-record">
             <div class="title-header-container" >
-            <h1>Daily present Report</h1>
+            <h1>Rfid Report</h1>
             <button class="button">filter</button>
             </div>
             <div class="container-record" >
@@ -135,53 +173,88 @@
         >
     </div>
 </div>
-    </div>
-          
-            
-            <table class="attendance-table">
-        <thead>
+    </div>          
+    <table class="attendance-table">
+    <thead>
+        <tr>
+            <th>Student ID</th>
+            <th>Student Name</th>
+            <th>USN</th>
+            <th>Course</th>
+            <th>Section</th>
+            <th>Year</th>
+            <th>Rfid Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        require "./connect.php"; 
+        $sql = "SELECT ID_number, `student name`, USN, Course, Section, Year, status FROM student_create";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0): ?>
+            <?php while ($row = $result->fetch_assoc()): ?>
+                <tr>
+                    <td><?= $row['ID_number']; ?></td>
+                    <td><?= htmlspecialchars($row['student name']); ?></td>
+                    <td><?= htmlspecialchars($row['USN']); ?></td>
+                    <td><?= htmlspecialchars($row['Course']); ?></td>
+                    <td><?= htmlspecialchars($row['Section']); ?></td>
+                    <td><?= htmlspecialchars($row['Year']); ?></td>
+                    <td>
+                        <button 
+                            class="status-button <?= $row['status'] === 'active' ? 'active' : 'inactive'; ?>" 
+                            data-id="<?= $row['ID_number']; ?>" 
+                            data-status="<?= $row['status']; ?>" 
+                            onclick="updateStatus(this)">
+                            <?= $row['status'] === 'active' ? 'Deactivate' : 'Activate'; ?>
+                        </button>
+                    </td>
+                </tr>
+            <?php endwhile; ?>
+        <?php else: ?>
             <tr>
-                <th>Student Name</th>
-                <th>USN</th>
-                <th>Course</th>
-                <th>Time In</th>
-                <th>Time Out</th>
-                <th>Status</th>
+                <td colspan="7">No data found</td>
             </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td data-label="Student Name">John Doe</td>
-                <td data-label="USN">1AY20CS001</td>
-                <td data-label="Course">Computer Science</td>
-                <td data-label="Time In">09:15 AM</td>
-                <td data-label="Time Out">04:30 PM</td>
-                <td data-label="Status">
-                    <span class="status-present">Present</span>
-                </td>
-            </tr>
-            <tr>
-                <td data-label="Student Name">Jane Smith</td>
-                <td data-label="USN">1AY20CS002</td>
-                <td data-label="Course">Software Engineering</td>
-                <td data-label="Time In">09:30 AM</td>
-                <td data-label="Time Out">04:45 PM</td>
-                <td data-label="Status">
-                    <span class="status-late">Late</span>
-                </td>
-            </tr>
-            <tr>
-                <td data-label="Student Name">Mike Johnson</td>
-                <td data-label="USN">1AY20CS003</td>
-                <td data-label="Course">Data Science</td>
-                <td data-label="Time In">-</td>
-                <td data-label="Time Out">-</td>
-                <td data-label="Status">
-                    <span class="status-absent">Absent</span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <?php endif; ?>
+    </tbody>
+</table>
+    <script>
+  function updateStatus(button) {
+    const studentId = button.getAttribute('data-id');
+    const currentStatus = button.getAttribute('data-status');
+    const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+
+    console.log(`Student ID: ${studentId}, Current Status: ${currentStatus}, New Status: ${newStatus}`);
+
+    // Send AJAX request to update the status
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'Rfid.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log('Server response: ' + xhr.responseText); // Log server response
+            if (xhr.responseText.trim() === 'Status updated successfully') {
+                // Update the button status and text
+                button.setAttribute('data-status', newStatus);
+                button.textContent = newStatus === 'active' ? 'Deactivate' : 'Activate';
+                button.classList.toggle('active');
+                button.classList.toggle('inactive');
+            } else {
+                alert('Failed to update status.');
+            }
+        } else {
+            alert('Error: ' + xhr.statusText);
+        }
+    };
+    xhr.onerror = function () {
+        alert('Request failed');
+    };
+    xhr.send('id=' + studentId + '&status=' + newStatus);
+}
+
+    </script>
+
+
 
     <div class="pagination">
     <div class="pagination-info">
@@ -432,8 +505,8 @@ function filterRecords() {
     const totalEntriesSpan = document.getElementById('total-entries');
 
     // Pagination settings
-    const entriesPerPage = 1;
-    let currentPage = 1;
+    const entriesPerPage = 5;
+    let currentPage = 5;
     const totalEntries = rows.length;
     const totalPages = Math.ceil(totalEntries / entriesPerPage);
 

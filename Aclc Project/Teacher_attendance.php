@@ -54,7 +54,6 @@
                 </ul>
             </li>
             <li><a href="Report.php"><img width="24" height="24" src="https://img.icons8.com/ios/50/bar-chart--v1.png" alt="bar-chart--v1"/><span>Reports</span></a></li>
-            <li><a href="teacher.php"><img width="24" height="24" src="https://img.icons8.com/windows/32/training.png" alt="training"/><span>Teacher</span></a></li>
             <li style="background:red;"><a href="logout.php">Logout</a></li>
         </ul>
     </div>

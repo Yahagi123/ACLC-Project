@@ -109,7 +109,10 @@ $senior_count = $row['senior_count'];
     </div>
     <div class="content-calendar">
         <div class="calendar-container">
+        <div id="calendar">
             <script src="calendar.js"></script>
+        </div>
+
         </div>
     </div>
 
