@@ -143,7 +143,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             <div class="space-y-2">
                                 <p class="text-lg text-gray-600"><strong>USN:</strong> <?= htmlspecialchars($row['USN']) ?></p>
                                 <p class="text-lg text-gray-600"><strong>Course:</strong> <?= htmlspecialchars($row['Course']) ?></p>
+                                <p class="text-lg text-gray-600"><strong>Section:</strong> <?= htmlspecialchars($row['Section']) ?></p>
                                 <p class="text-lg text-gray-600"><strong>Year:</strong> <?= htmlspecialchars($row['Year']) ?></p>
+                                
                             </div>
                         <?php } else { ?>
                             <h2 class="text-2xl font-semibold text-gray-400">No Student Selected</h2>

@@ -71,7 +71,7 @@
         <div class="daily-record">
             <div class="title-header-container" >
             <h1>Daily present Report</h1>
-            <button class="button">filter</button>
+            <button class="button"><a href="Create.php">Create Student</a></button>
             </div>
             <div class="container-record" >
                     <input class="all" type="text" placeholder="All" >

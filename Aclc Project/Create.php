@@ -7,7 +7,6 @@ if (isset($_POST["Create"])) {
     
     // Sanitize inputs to prevent XSS and SQL injection
     $Student = mysqli_real_escape_string($conn, $_POST['Name']);
-    $Rfid = mysqli_real_escape_string($conn, $_POST['Rfid']);
     $USN = mysqli_real_escape_string($conn, $_POST['USN']);
     $Email = mysqli_real_escape_string($conn, $_POST['Email']);
     $Address = mysqli_real_escape_string($conn, $_POST['Address']);
@@ -50,8 +49,8 @@ if (isset($_POST["Create"])) {
         $emptyError = "There is a blank in the form.";
     } else {
         if (empty($emptyError)) {
-            $sql = "INSERT INTO `student_create`(`Image`, `student name`, `USN`,`RFID`, `Email Address`, `Address`, `Course`,Section, `Year`, `birthdate`) 
-                    VALUES ('$image', '$Student','$Rfid' ,'$USN', '$Email', '$Address', '$Course','$section', '$Year', '$Birth')";
+            $sql = "INSERT INTO `student_create`(`Image`, `student name`, `USN`,`Email Address`, `Address`, `Course`,Section, `Year`, `birthdate`) 
+                    VALUES ('$image', '$Student','$USN', '$Email', '$Address', '$Course','$section', '$Year', '$Birth')";
             
             if ($conn->query($sql)) {
                 $Create = "Successfully created new UID";
@@ -94,10 +93,6 @@ if (isset($_POST["Create"])) {
                     <input type="text" name="Name" id="Name" placeholder="Enter Full Name">
                 </div>
                 <div class="label_container">
-                    <label for="Rfid">Unique Student Number</label>
-                    <input type="text" name="Rfid" id="Rfid" placeholder="Enter Rfid">
-                </div>
-                <div class="label_container">
                     <label for="USN">Card Number</label>
                     <input type="text" name="USN" id="USN" placeholder="Enter USN">
                 </div>
@@ -126,20 +121,20 @@ if (isset($_POST["Create"])) {
                     <label for="section">Class Section</label>
                     <select name="section" id="section">
                         <option value="">Select Section</option>
-                        <option value="A1">11A</option>
-                        <option value="A2">12A</option>
-                        <option value="A2">12B</option>
-                        <option value="A2">21A</option>
-                        <option value="A2">22A</option>
-                        <option value="A2">21B</option>
-                        <option value="A2">22B</option>
-                        <option value="A2">31A</option>
-                        <option value="A2">31B</option>
-                        <option value="A2">32A</option>
-                        <option value="A2">32B</option>
-                        <option value="A2">41A</option>
-                        <option value="A2">42A</option>
-                        <option value="A2">42B</option>
+                        <option value="11A">11A</option>
+                        <option value="12A">12A</option>
+                        <option value="12B">12B</option>
+                        <option value="21A">21A</option>
+                        <option value="22A">22A</option>
+                        <option value="21B">21B</option>
+                        <option value="22B">22B</option>
+                        <option value="31A">31A</option>
+                        <option value="31B">31B</option>
+                        <option value="32A">32A</option>
+                        <option value="32B">32B</option>
+                        <option value="41AA">41A</option>
+                        <option value="42A">42A</option>
+                        <option value="42B">42B</option>
                     </select>
                 </div>
                 <div class="label_container">

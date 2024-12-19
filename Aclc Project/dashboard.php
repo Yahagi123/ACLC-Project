@@ -14,6 +14,12 @@ $row = mysqli_fetch_assoc($result);
 
 // Get the number of Senior High students
 $senior_count = $row['senior_count'];
+
+$query = "SELECT COUNT(*) AS All_count FROM student_create ";
+
+$result = mysqli_query($conn, $query);
+$row = mysqli_fetch_assoc($result);
+$All_student = $row['All_count'];
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +30,7 @@ $senior_count = $row['senior_count'];
     <title>RFID Attendance Monitoring Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="sidebar.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
 
@@ -94,7 +100,7 @@ $senior_count = $row['senior_count'];
             </div>
             <div class="boxs">
                 <h3>Total Student</h3>
-                <h2>---</h2>
+                <h2><?php echo $All_student; ?></h2>
             </div>
         </div>
         <div class="graph_container">
@@ -105,8 +111,81 @@ $senior_count = $row['senior_count'];
         </div>
     </div>
     <div class="content-table">
-        <div class="table_container"></div>
+
+<!-- Table Section -->
+<div class="table_container" style="display: flex; align-items: flex-start; gap: 20px;">
+
+    <!-- Profile Box -->
+    <div class="profile-box" style="border: 1px solid #ccc; padding: 15px; width: 300px; text-align: center; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+        <?php
+            require './connect.php';
+
+            $sql = "SELECT Username, Email, Role FROM user WHERE UID = 1"; 
+            $result = $conn->query($sql);
+
+            // Check if the query returned a result
+            if ($result->num_rows > 0) {
+                $user = $result->fetch_assoc();
+            } else {
+                $user = [
+                    'Username' => 'N/A',
+                    'Email' => 'N/A',
+                    'Role' => 'N/A'
+                ];
+            }
+        ?>
+        <img id="profile-image" src="../uploads/675c17bfcd9f06.45491065.png" alt="Profile Image" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 10px;">
+        <h3><?= htmlspecialchars($user['Username']); ?></h3>
+        <p>Email: <?= htmlspecialchars($user['Email']); ?></p>
+        <p>Role: <?= htmlspecialchars($user['Role']); ?></p>
     </div>
+
+    <!-- Schedule Table -->
+    <table border="1" style="width:100%; border-collapse: collapse; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Time</th>
+                <th>Subject</th>
+                <th>Room</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Monday</td>
+                <td>8:00 AM - 10:00 AM</td>
+                <td>Mathematics</td>
+                <td>Room 101</td>
+            </tr>
+            <tr>
+                <td>Monday</td>
+                <td>10:30 AM - 12:00 PM</td>
+                <td>English</td>
+                <td>Room 102</td>
+            </tr>
+            <tr>
+                <td>Tuesday</td>
+                <td>1:00 PM - 3:00 PM</td>
+                <td>Science</td>
+                <td>Room 103</td>
+            </tr>
+            <tr>
+                <td>Wednesday</td>
+                <td>8:00 AM - 10:00 AM</td>
+                <td>History</td>
+                <td>Room 104</td>
+            </tr>
+            <tr>
+                <td>Thursday</td>
+                <td>9:00 AM - 11:00 AM</td>
+                <td>Physical Education</td>
+                <td>Gym</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+
     <div class="content-calendar">
         <div class="calendar-container">
         <div id="calendar">
